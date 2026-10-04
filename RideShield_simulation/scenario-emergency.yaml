@@ -1,0 +1,49 @@
+name: 'RideShield Emergency Test'
+version: 1
+author: 'RideShield Team'
+steps:
+  - wait-serial: 'RideShield Core Safety POC - Wokwi'
+  - set-control: { part-id: head, control: pressed, value: 1 }
+  - set-control: { part-id: strap, control: pressed, value: 1 }
+  - set-control: { part-id: gpsFix, control: pressed, value: 1 }
+  - set-control: { part-id: lte, control: pressed, value: 1 }
+  - set-control: { part-id: speed, control: position, value: 0.50 }
+  - wait-serial: 'state=READY'
+  - set-control:
+      part-id: imu
+      control: accelX
+      value: 10.0
+  - set-control:
+      part-id: imu
+      control: rotationY
+      value: 1000
+  - delay: 300ms
+  - set-control:
+      part-id: imu
+      control: accelX
+      value: 0
+  - set-control:
+      part-id: imu
+      control: accelY
+      value: 0
+  - set-control:
+      part-id: imu
+      control: accelZ
+      value: 1
+  - set-control:
+      part-id: imu
+      control: rotationX
+      value: 0
+  - set-control:
+      part-id: imu
+      control: rotationY
+      value: 0
+  - set-control:
+      part-id: imu
+      control: rotationZ
+      value: 0
+
+  - wait-serial: 'Candidate CONFIRMED by multi-factor check'
+  - wait-serial: 'Crash event CONFIRMED'
+  - wait-serial: 'GPS: CURRENT FIX'
+  - wait-serial: 'SMS: SENT SUCCESSFULLY'

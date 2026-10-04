@@ -1,0 +1,47 @@
+name: 'RideShield MPU crash scenario'
+version: 1
+author: 'RideShield Team'
+steps:
+  - wait-serial: 'RideShield Core Safety POC - Wokwi'
+  - delay: 2s
+
+  # Assumes HEAD PRESENT and STRAP FASTENED switches are ON.
+  # Simulate a short impact and rotation with the real Wokwi MPU6050 controls.
+  - set-control:
+      part-id: imu
+      control: accelX
+      value: 6.0
+  - set-control:
+      part-id: imu
+      control: rotationY
+      value: 700
+  - delay: 300ms
+
+  # Return the sensor to a stationary post-event condition.
+  - set-control:
+      part-id: imu
+      control: accelX
+      value: 0
+  - set-control:
+      part-id: imu
+      control: accelY
+      value: 0
+  - set-control:
+      part-id: imu
+      control: accelZ
+      value: 1
+  - set-control:
+      part-id: imu
+      control: rotationX
+      value: 0
+  - set-control:
+      part-id: imu
+      control: rotationY
+      value: 0
+  - set-control:
+      part-id: imu
+      control: rotationZ
+      value: 0
+
+  - wait-serial: 'Candidate CONFIRMED'
+  - wait-serial: '10 seconds to cancel emergency alert'

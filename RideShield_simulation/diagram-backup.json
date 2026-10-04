@@ -1,0 +1,508 @@
+{
+  "version": 1,
+  "author": "RideShield Team",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-s3-devkitc-1",
+      "id": "esp",
+      "top": 20,
+      "left": 10,
+      "attrs": {
+        "flashSize": "16",
+        "psramSize": "8",
+        "psramType": "octal"
+      }
+    },
+    {
+      "type": "wokwi-mpu6050",
+      "id": "imu",
+      "top": -210,
+      "left": -320,
+      "attrs": {
+        "accelX": "0",
+        "accelY": "0",
+        "accelZ": "1",
+        "rotationX": "0",
+        "rotationY": "0",
+        "rotationZ": "0"
+      }
+    },
+    {
+      "type": "wokwi-slide-switch",
+      "id": "head",
+      "top": -75,
+      "left": -330,
+      "attrs": {
+	"value": "1",
+        "bounce": "0"
+      }
+    },
+    {
+      "type": "wokwi-slide-switch",
+      "id": "strap",
+      "top": 45,
+      "left": -330,
+      "attrs": {
+        "bounce": "0"
+      }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "crash",
+      "top": 170,
+      "left": -335,
+      "attrs": {
+        "color": "red",
+        "label": "CRASH TEST",
+        "key": "X",
+        "bounce": "0"
+      }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "cancel",
+      "top": 265,
+      "left": -335,
+      "attrs": {
+        "color": "blue",
+        "label": "CANCEL",
+        "key": "C",
+        "bounce": "0"
+      }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "reset",
+      "top": 360,
+      "left": -335,
+      "attrs": {
+        "color": "gray",
+        "label": "RESET DEMO",
+        "key": "R",
+        "bounce": "0"
+      }
+    },
+    {
+      "type": "wokwi-slide-switch",
+      "id": "gpsFix",
+      "top": -185,
+      "left": 360,
+      "attrs": {
+        "bounce": "0"
+      }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "speed",
+      "top": -60,
+      "left": 370,
+      "attrs": {
+        "value": "430"
+      }
+    },
+    {
+      "type": "wokwi-slide-switch",
+      "id": "lte",
+      "top": 80,
+      "left": 360,
+      "attrs": {
+        "bounce": "0"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "wornLed",
+      "top": 205,
+      "left": 385,
+      "attrs": {
+        "color": "green",
+        "label": "HELMET WORN"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rworn",
+      "top": 250,
+      "left": 320,
+      "rotate": 90,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "warnLed",
+      "top": 305,
+      "left": 385,
+      "attrs": {
+        "color": "yellow",
+        "label": "CRASH WARNING"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rwarn",
+      "top": 350,
+      "left": 320,
+      "rotate": 90,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "alertLed",
+      "top": 405,
+      "left": 385,
+      "attrs": {
+        "color": "red",
+        "label": "EMERGENCY"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "ralert",
+      "top": 450,
+      "left": 320,
+      "rotate": 90,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "buzzer",
+      "top": 505,
+      "left": 380,
+      "attrs": {
+        "volume": "0.25",
+        "mode": "smooth"
+      }
+    },
+    {
+      "type": "wokwi-microsd-card",
+      "id": "sd",
+      "top": 455,
+      "left": 20,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-text",
+      "id": "lblHead",
+      "top": -110,
+      "left": -340,
+      "attrs": {
+        "text": "HEAD PRESENT"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "lblStrap",
+      "top": 10,
+      "left": -345,
+      "attrs": {
+        "text": "STRAP FASTENED"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "lblGps",
+      "top": -220,
+      "left": 350,
+      "attrs": {
+        "text": "GPS FIX"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "lblSpeed",
+      "top": -95,
+      "left": 350,
+      "attrs": {
+        "text": "GPS SPEED 0-120 km/h"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "lblLte",
+      "top": 45,
+      "left": 350,
+      "attrs": {
+        "text": "LTE NETWORK"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "imu:VCC",
+      "esp:3V3.1",
+      "red",
+      []
+    ],
+    [
+      "imu:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "imu:SDA",
+      "esp:8",
+      "green",
+      []
+    ],
+    [
+      "imu:SCL",
+      "esp:9",
+      "blue",
+      []
+    ],
+    [
+      "head:1",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "head:2",
+      "esp:4",
+      "green",
+      []
+    ],
+    [
+      "head:3",
+      "esp:3V3.1",
+      "red",
+      []
+    ],
+    [
+      "strap:1",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "strap:2",
+      "esp:5",
+      "green",
+      []
+    ],
+    [
+      "strap:3",
+      "esp:3V3.1",
+      "red",
+      []
+    ],
+    [
+      "crash:1.l",
+      "esp:14",
+      "red",
+      []
+    ],
+    [
+      "crash:2.l",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "cancel:1.l",
+      "esp:6",
+      "blue",
+      []
+    ],
+    [
+      "cancel:2.l",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "reset:1.l",
+      "esp:40",
+      "gray",
+      []
+    ],
+    [
+      "reset:2.l",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "gpsFix:1",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "gpsFix:2",
+      "esp:18",
+      "green",
+      []
+    ],
+    [
+      "gpsFix:3",
+      "esp:3V3.1",
+      "red",
+      []
+    ],
+    [
+      "speed:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "speed:SIG",
+      "esp:1",
+      "green",
+      []
+    ],
+    [
+      "speed:VCC",
+      "esp:3V3.1",
+      "red",
+      []
+    ],
+    [
+      "lte:1",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "lte:2",
+      "esp:21",
+      "green",
+      []
+    ],
+    [
+      "lte:3",
+      "esp:3V3.1",
+      "red",
+      []
+    ],
+    [
+      "esp:15",
+      "rworn:1",
+      "green",
+      []
+    ],
+    [
+      "rworn:2",
+      "wornLed:A",
+      "green",
+      []
+    ],
+    [
+      "wornLed:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:16",
+      "rwarn:1",
+      "yellow",
+      []
+    ],
+    [
+      "rwarn:2",
+      "warnLed:A",
+      "yellow",
+      []
+    ],
+    [
+      "warnLed:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:17",
+      "ralert:1",
+      "red",
+      []
+    ],
+    [
+      "ralert:2",
+      "alertLed:A",
+      "red",
+      []
+    ],
+    [
+      "alertLed:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "buzzer:1",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "buzzer:2",
+      "esp:7",
+      "purple",
+      []
+    ],
+    [
+      "sd:VCC",
+      "esp:3V3.2",
+      "red",
+      []
+    ],
+    [
+      "sd:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "sd:CS",
+      "esp:10",
+      "orange",
+      []
+    ],
+    [
+      "sd:DI",
+      "esp:11",
+      "green",
+      []
+    ],
+    [
+      "sd:SCK",
+      "esp:12",
+      "blue",
+      []
+    ],
+    [
+      "sd:DO",
+      "esp:13",
+      "purple",
+      []
+    ]
+  ],
+  "dependencies": {},
+  "serialMonitor": {
+    "display": "always",
+    "newline": "lf",
+    "convertEol": false
+  }
+}

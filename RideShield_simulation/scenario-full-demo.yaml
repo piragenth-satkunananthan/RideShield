@@ -1,0 +1,286 @@
+name: 'RideShield Full Automated Semi-Final Demo - Race Safe'
+version: 1
+author: 'RideShield Team'
+steps:
+  - wait-serial: 'RideShield Core Safety POC - Wokwi'
+
+  # ==========================================================
+  # A. HELMET VALIDATION
+  # ==========================================================
+  - set-control:
+      part-id: head
+      control: pressed
+      value: 1
+
+  - wait-serial: 'head=YES strap=NO'
+
+  # Crash attempt with strap open.
+  # IMPORTANT: wait for the firmware message BEFORE releasing the button,
+  # otherwise the message can occur before wait-serial becomes active.
+  - set-control:
+      part-id: crash
+      control: pressed
+      value: 1
+
+  - wait-serial: 'Event ignored: helmet is not verified as worn'
+
+  - set-control:
+      part-id: crash
+      control: pressed
+      value: 0
+
+  # Fasten helmet and bring simulated communication interfaces online.
+  - set-control:
+      part-id: strap
+      control: pressed
+      value: 1
+
+  - set-control:
+      part-id: gpsFix
+      control: pressed
+      value: 1
+
+  - set-control:
+      part-id: lte
+      control: pressed
+      value: 1
+
+  - set-control:
+      part-id: speed
+      control: position
+      value: 0.50
+
+  # Give updateGpsSimulation() time to record a valid pre-event speed.
+  - delay: 600ms
+
+  - wait-serial: 'LTE=ONLINE'
+
+  # ==========================================================
+  # B. MPU CRASH -> RIDER CANCELS
+  # ==========================================================
+  - set-control:
+      part-id: imu
+      control: accelX
+      value: 6.0
+
+  - set-control:
+      part-id: imu
+      control: rotationY
+      value: 700
+
+  # Arm the serial check while the impact is still active.
+  - wait-serial: 'Candidate detected'
+
+  # Keep the impact present for a short period, then return to stillness.
+  - delay: 250ms
+
+  - set-control:
+      part-id: imu
+      control: accelX
+      value: 0
+
+  - set-control:
+      part-id: imu
+      control: accelY
+      value: 0
+
+  - set-control:
+      part-id: imu
+      control: accelZ
+      value: 1
+
+  - set-control:
+      part-id: imu
+      control: rotationX
+      value: 0
+
+  - set-control:
+      part-id: imu
+      control: rotationY
+      value: 0
+
+  - set-control:
+      part-id: imu
+      control: rotationZ
+      value: 0
+
+  # This line occurs about 1.2 s after the candidate begins.
+  - wait-serial: '10 seconds to cancel emergency alert'
+
+  - delay: 2500ms
+
+  # Press cancel and wait for acknowledgement BEFORE release.
+  - set-control:
+      part-id: cancel
+      control: pressed
+      value: 1
+
+  - wait-serial: 'Rider cancelled the emergency alert'
+
+  - set-control:
+      part-id: cancel
+      control: pressed
+      value: 0
+
+  - wait-serial: 'state=READY'
+
+  # ==========================================================
+  # C. MPU CRASH -> NO RESPONSE -> EMERGENCY
+  # ==========================================================
+  - set-control:
+      part-id: imu
+      control: accelX
+      value: 10.0
+
+  - set-control:
+      part-id: imu
+      control: rotationY
+      value: 1000
+
+  - wait-serial: 'Candidate detected'
+
+  - delay: 250ms
+
+  - set-control:
+      part-id: imu
+      control: accelX
+      value: 0
+
+  - set-control:
+      part-id: imu
+      control: accelY
+      value: 0
+
+  - set-control:
+      part-id: imu
+      control: accelZ
+      value: 1
+
+  - set-control:
+      part-id: imu
+      control: rotationX
+      value: 0
+
+  - set-control:
+      part-id: imu
+      control: rotationY
+      value: 0
+
+  - set-control:
+      part-id: imu
+      control: rotationZ
+      value: 0
+
+  - wait-serial: '10 seconds to cancel emergency alert'
+
+  # No cancel here: wait for the countdown to expire.
+  - wait-serial: 'Crash event CONFIRMED'
+
+  - wait-serial: 'GPS: CURRENT FIX'
+
+  - wait-serial: 'SMS: SENT SUCCESSFULLY'
+
+  # Reset and wait for the reset message before releasing.
+  - set-control:
+      part-id: reset
+      control: pressed
+      value: 1
+
+  - wait-serial: 'New state: READY'
+
+  - set-control:
+      part-id: reset
+      control: pressed
+      value: 0
+
+  # ==========================================================
+  # D. GPS + LTE FAILURE -> LAST KNOWN LOCATION + RETRY
+  # ==========================================================
+  - set-control:
+      part-id: gpsFix
+      control: pressed
+      value: 0
+
+  - set-control:
+      part-id: lte
+      control: pressed
+      value: 0
+
+  - wait-serial: 'LTE=OFFLINE'
+
+  - set-control:
+      part-id: imu
+      control: accelX
+      value: 8.0
+
+  - set-control:
+      part-id: imu
+      control: rotationY
+      value: 800
+
+  - wait-serial: 'Candidate detected'
+
+  - delay: 250ms
+
+  - set-control:
+      part-id: imu
+      control: accelX
+      value: 0
+
+  - set-control:
+      part-id: imu
+      control: accelY
+      value: 0
+
+  - set-control:
+      part-id: imu
+      control: accelZ
+      value: 1
+
+  - set-control:
+      part-id: imu
+      control: rotationX
+      value: 0
+
+  - set-control:
+      part-id: imu
+      control: rotationY
+      value: 0
+
+  - set-control:
+      part-id: imu
+      control: rotationZ
+      value: 0
+
+  - wait-serial: '10 seconds to cancel emergency alert'
+
+  - wait-serial: 'Crash event CONFIRMED'
+
+  - wait-serial: 'GPS: LAST KNOWN'
+
+  - wait-serial: 'SMS: QUEUED FOR RETRY'
+
+  # Restore LTE and verify automatic retry.
+  - set-control:
+      part-id: lte
+      control: pressed
+      value: 1
+
+  - wait-serial: 'Network restored -> retrying queued emergency alert'
+
+  - wait-serial: 'SMS: SENT SUCCESSFULLY'
+
+  # ==========================================================
+  # E. PRINT SD-CARD EVIDENCE
+  # ==========================================================
+  - write-serial: 'L'
+
+  - wait-serial: '===== /events.csv ====='
+
+  - wait-serial: '===== END ====='
+
+  - write-serial: 'B'
+
+  - wait-serial: '===== /blackbox.csv ====='
+
+  - wait-serial: '===== END ====='
