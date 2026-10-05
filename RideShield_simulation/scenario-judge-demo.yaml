@@ -1,0 +1,300 @@
+name: 'RideShield Semi-Final Judge Demo'
+version: 1
+author: 'RideShield Team'
+
+# Short presentation scenario.
+# The full scenario-full-demo-precise.yaml remains the engineering validation test.
+#
+# Live judge demo objectives:
+#   1. Show helmet verification
+#   2. Show a real virtual-MPU crash and multi-factor verification
+#   3. Show rider cancellation
+#   4. Show a second crash escalating to emergency
+#   5. Show GPS current-fix + simulated LTE send
+#   6. Show LTE failure -> queued alert -> automatic retry
+#
+# Do not dump blackbox.csv during the live demo.
+# Use the full precise scenario if judges request deeper evidence.
+
+steps:
+
+  # ------------------------------------------------------------
+  # DEMO 1 — BOOT AND HELMET VERIFICATION
+  # ------------------------------------------------------------
+  - wait-serial: 'RideShield Core Safety POC - Wokwi'
+  - wait-serial: '[BOOT] MPU6050: OK'
+  - wait-serial: '[BOOT] microSD: OK'
+
+  # Known baseline
+  - set-control:
+      part-id: head
+      control: pressed
+      value: 1
+
+  - set-control:
+      part-id: strap
+      control: pressed
+      value: 0
+
+  - set-control:
+      part-id: gpsFix
+      control: pressed
+      value: 0
+
+  - set-control:
+      part-id: lte
+      control: pressed
+      value: 0
+
+  - set-control:
+      part-id: speed
+      control: position
+      value: 0.50
+
+  - wait-serial: 'state=NOT_WORN worn=NO head=YES strap=NO'
+
+  # Show that a dropped/unsecured helmet does not start emergency flow
+  - set-control:
+      part-id: crash
+      control: pressed
+      value: 1
+
+  - wait-serial: '[CRASH] Event ignored: helmet is not verified as worn'
+
+  - set-control:
+      part-id: crash
+      control: pressed
+      value: 0
+
+  # Make helmet valid, GPS and LTE available
+  - set-control:
+      part-id: strap
+      control: pressed
+      value: 1
+
+  - set-control:
+      part-id: gpsFix
+      control: pressed
+      value: 1
+
+  - set-control:
+      part-id: lte
+      control: pressed
+      value: 1
+
+  - delay: 600ms
+
+  - wait-serial: 'state=READY worn=YES head=YES strap=YES'
+  - wait-serial: 'GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK'
+
+  # ------------------------------------------------------------
+  # DEMO 2 — CRASH DETECTED, RIDER CANCELS
+  # ------------------------------------------------------------
+  - set-control:
+      part-id: imu
+      control: accelX
+      value: 6.0
+
+  - set-control:
+      part-id: imu
+      control: rotationY
+      value: 700
+
+  - wait-serial: '[CRASH] Candidate detected'
+  - wait-serial: '[CRASH] Source: MPU6050'
+
+  - delay: 250ms
+
+  # Return to stillness
+  - set-control:
+      part-id: imu
+      control: accelX
+      value: 0
+  - set-control:
+      part-id: imu
+      control: accelY
+      value: 0
+  - set-control:
+      part-id: imu
+      control: accelZ
+      value: 1
+  - set-control:
+      part-id: imu
+      control: rotationX
+      value: 0
+  - set-control:
+      part-id: imu
+      control: rotationY
+      value: 0
+  - set-control:
+      part-id: imu
+      control: rotationZ
+      value: 0
+
+  - wait-serial: '[VERIFY] peakAccel=6.08g peakGyro=700dps speed=60.0 still=YES evidence=4'
+  - wait-serial: '[CRASH] Candidate CONFIRMED by multi-factor check'
+  - wait-serial: '[COUNTDOWN] 10 seconds to cancel emergency alert'
+
+  - delay: 1800ms
+
+  - set-control:
+      part-id: cancel
+      control: pressed
+      value: 1
+
+  - wait-serial: '[CANCEL] Rider cancelled the emergency alert'
+  - wait-serial: '[CANCEL] Event score for record: 48/100 MODERATE'
+  - wait-serial: '[SD] Event summary written to /events.csv'
+
+  - set-control:
+      part-id: cancel
+      control: pressed
+      value: 0
+
+  - wait-serial: '[STATUS] state=READY'
+
+  # ------------------------------------------------------------
+  # DEMO 3 — CRASH, NO RESPONSE, EMERGENCY
+  # ------------------------------------------------------------
+  - set-control:
+      part-id: imu
+      control: accelX
+      value: 10.0
+
+  - set-control:
+      part-id: imu
+      control: rotationY
+      value: 1000
+
+  - wait-serial: '[CRASH] Candidate detected'
+
+  - delay: 250ms
+
+  - set-control:
+      part-id: imu
+      control: accelX
+      value: 0
+  - set-control:
+      part-id: imu
+      control: accelY
+      value: 0
+  - set-control:
+      part-id: imu
+      control: accelZ
+      value: 1
+  - set-control:
+      part-id: imu
+      control: rotationX
+      value: 0
+  - set-control:
+      part-id: imu
+      control: rotationY
+      value: 0
+  - set-control:
+      part-id: imu
+      control: rotationZ
+      value: 0
+
+  - wait-serial: '[VERIFY] peakAccel=10.05g peakGyro=1000dps speed=60.0 still=YES evidence=4'
+  - wait-serial: '[COUNTDOWN] 10 seconds to cancel emergency alert'
+
+  # No rider response
+  - wait-serial: '[COUNTDOWN] 0'
+  - wait-serial: '[EMERGENCY] Crash event CONFIRMED'
+  - wait-serial: '[EMERGENCY] Crash Event Severity Index: 73/100 -> HIGH-ENERGY EVENT'
+  - wait-serial: 'GPS: CURRENT FIX'
+  - wait-serial: 'LTE: NETWORK AVAILABLE'
+  - wait-serial: 'SMS: SENT SUCCESSFULLY'
+
+  # ------------------------------------------------------------
+  # DEMO 4 — COMMUNICATION FAILURE AND RECOVERY
+  # ------------------------------------------------------------
+  - set-control:
+      part-id: reset
+      control: pressed
+      value: 1
+
+  - wait-serial: '[RESET] New state: READY'
+
+  - set-control:
+      part-id: reset
+      control: pressed
+      value: 0
+
+  - set-control:
+      part-id: gpsFix
+      control: pressed
+      value: 0
+
+  - set-control:
+      part-id: lte
+      control: pressed
+      value: 0
+
+  - wait-serial: 'GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK'
+
+  - set-control:
+      part-id: imu
+      control: accelX
+      value: 8.0
+
+  - set-control:
+      part-id: imu
+      control: rotationY
+      value: 800
+
+  - wait-serial: '[CRASH] Candidate detected'
+
+  - delay: 250ms
+
+  - set-control:
+      part-id: imu
+      control: accelX
+      value: 0
+  - set-control:
+      part-id: imu
+      control: accelY
+      value: 0
+  - set-control:
+      part-id: imu
+      control: accelZ
+      value: 1
+  - set-control:
+      part-id: imu
+      control: rotationX
+      value: 0
+  - set-control:
+      part-id: imu
+      control: rotationY
+      value: 0
+  - set-control:
+      part-id: imu
+      control: rotationZ
+      value: 0
+
+  - wait-serial: '[VERIFY] peakAccel=8.06g peakGyro=800dps speed=60.0 still=YES evidence=4'
+  - wait-serial: '[COUNTDOWN] 0'
+  - wait-serial: '[EMERGENCY] Crash Event Severity Index: 65/100 -> MODERATE-ENERGY EVENT'
+  - wait-serial: 'GPS: LAST KNOWN'
+  - wait-serial: 'LTE: NO NETWORK'
+  - wait-serial: 'SMS: QUEUED FOR RETRY'
+
+  # Restore LTE
+  - set-control:
+      part-id: lte
+      control: pressed
+      value: 1
+
+  - wait-serial: '[LTE] Network restored -> retrying queued emergency alert'
+  - wait-serial: 'LTE: NETWORK AVAILABLE'
+  - wait-serial: 'SMS: SENT SUCCESSFULLY'
+
+  # ------------------------------------------------------------
+  # DEMO 5 — SHOW COMPACT EVENT RECORDS
+  # ------------------------------------------------------------
+  - write-serial: 'L'
+  - wait-serial: '===== /events.csv ====='
+  - wait-serial: 'CANCELLED,48,MODERATE,6.08'
+  - wait-serial: 'CONFIRMED,73,HIGH,10.05'
+  - wait-serial: 'CONFIRMED,65,MODERATE,8.06'
+  - wait-serial: '===== END ====='
