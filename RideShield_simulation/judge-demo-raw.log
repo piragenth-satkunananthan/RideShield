@@ -1,0 +1,225 @@
+Wokwi CLI v0.28.0 (872b270d5383)
+Connected to Wokwi Simulation API 1.0.0-20261002-gd6cd65f4
+Starting simulation...
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce3808,len:0x370
+load:0x403c9700,len:0x900
+load:0x403cc700,len:0x2364
+entry 0x403c98ac
+
+================================================
+     RideShield Core Safety POC - Wokwi
+[RideShield Semi-Final Judge Demo] Expected text matched: "RideShield Core Safety POC - Wokwi"
+================================================
+[BOOT] MPU6050: OK
+[RideShield Semi-Final Judge Demo] Expected text matched: "[BOOT] MPU6050: OK"
+ (±16g, ±2000dps)
+[BOOT] microSD: OK
+[RideShield Semi-Final Judge Demo] Expected text matched: "[BOOT] microSD: OK"
+[BOOT] GPS/LTE/head/strap are automatable interface-level test inputs
+[BOOT] X=Crash Test button, C=Cancel, R=Reset Demo
+[BOOT] Serial commands: L=events, B=black-box, R=reset, H=help
+
+[STATUS] state=NOT_WORN worn=NO head=YES strap=NO
+[RideShield Semi-Final Judge Demo] Expected text matched: "state=NOT_WORN worn=NO head=YES strap=NO"
+ | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=0.0km/h | LTE=OFFLINE | SD=OK
+[CRASH] Event ignored: helmet is not verified as worn
+[RideShield Semi-Final Judge Demo] Expected text matched: "[CRASH] Event ignored: helmet is not verified as worn"
+[RideShield Semi-Final Judge Demo] delay 600ms
+E (1940) ledc: ledc_get_duty(745): LEDC is not initialized
+[HELMET] State changed -> READY
+[STATUS] state=READY worn=YES head=YES strap=YES
+[RideShield Semi-Final Judge Demo] Expected text matched: "state=READY worn=YES head=YES strap=YES"
+ | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[RideShield Semi-Final Judge Demo] Expected text matched: "GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK"
+[BLACKBOX] Frozen pre-event snapshot: 31 samples
+
+[CRASH] Candidate detected
+[RideShield Semi-Final Judge Demo] Expected text matched: "[CRASH] Candidate detected"
+[CRASH] Source: MPU6050
+[RideShield Semi-Final Judge Demo] Expected text matched: "[CRASH] Source: MPU6050"
+[RideShield Semi-Final Judge Demo] delay 250ms
+[CRASH] Pre-event speed: 60.0 km/h
+[STATUS] state=VERIFYING worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[VERIFY] peakAccel=6.08g peakGyro=700dps speed=60.0 still=YES evidence=4
+[RideShield Semi-Final Judge Demo] Expected text matched: "[VERIFY] peakAccel=6.08g peakGyro=700dps speed=60.0 still=YES evidence=4"
+[CRASH] Candidate CONFIRMED by multi-factor check
+[RideShield Semi-Final Judge Demo] Expected text matched: "[CRASH] Candidate CONFIRMED by multi-factor check"
+[COUNTDOWN] 10 seconds to cancel emergency alert
+[RideShield Semi-Final Judge Demo] Expected text matched: "[COUNTDOWN] 10 seconds to cancel emergency alert"
+[RideShield Semi-Final Judge Demo] delay 1800ms
+[COUNTDOWN] 10
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 9
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+
+[CANCEL] Rider cancelled the emergency alert
+[RideShield Semi-Final Judge Demo] Expected text matched: "[CANCEL] Rider cancelled the emergency alert"
+[CANCEL] Event score for record: 48/100 MODERATE
+[RideShield Semi-Final Judge Demo] Expected text matched: "[CANCEL] Event score for record: 48/100 MODERATE"
+[SD] Event summary written to /events.csv
+[RideShield Semi-Final Judge Demo] Expected text matched: "[SD] Event summary written to /events.csv"
+[SD] Saved 31 frozen pre-event black-box samples
+[STATUS] state=READY
+[RideShield Semi-Final Judge Demo] Expected text matched: "[STATUS] state=READY"
+ worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[BLACKBOX] Frozen pre-event snapshot: 100 samples
+
+[CRASH] Candidate detected
+[RideShield Semi-Final Judge Demo] Expected text matched: "[CRASH] Candidate detected"
+[RideShield Semi-Final Judge Demo] delay 250ms
+[CRASH] Source: MPU6050
+[CRASH] Pre-event speed: 60.0 km/h
+[STATUS] state=VERIFYING worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[VERIFY] peakAccel=10.05g peakGyro=1000dps speed=60.0 still=YES evidence=4
+[RideShield Semi-Final Judge Demo] Expected text matched: "[VERIFY] peakAccel=10.05g peakGyro=1000dps speed=60.0 still=YES evidence=4"
+[CRASH] Candidate CONFIRMED by multi-factor check
+[COUNTDOWN] 10 seconds to cancel emergency alert
+[RideShield Semi-Final Judge Demo] Expected text matched: "[COUNTDOWN] 10 seconds to cancel emergency alert"
+[COUNTDOWN] 10
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 9
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 8
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 7
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 6
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 5
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 4
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 3
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 2
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 1
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 0
+[RideShield Semi-Final Judge Demo] Expected text matched: "[COUNTDOWN] 0"
+
+[EMERGENCY] Crash event CONFIRMED
+[RideShield Semi-Final Judge Demo] Expected text matched: "[EMERGENCY] Crash event CONFIRMED"
+[EMERGENCY] Crash Event Severity Index: 73/100 -> HIGH-ENERGY EVENT
+[RideShield Semi-Final Judge Demo] Expected text matched: "[EMERGENCY] Crash Event Severity Index: 73/100 -> HIGH-ENERGY EVENT"
+[EMERGENCY] This is NOT a medical injury assessment.
+[SD] Event summary written to /events.csv
+[SD] Saved 100 frozen pre-event black-box samples
+
+============================================
+       RIDESHIELD EMERGENCY ALERT
+============================================
+  Event ID: 2
+  Event severity: HIGH (73/100)
+  Pre-event speed: 60.0 km/h
+  GPS: CURRENT FIX
+[RideShield Semi-Final Judge Demo] Expected text matched: "GPS: CURRENT FIX"
+  6.927079, 79.861244
+  LTE: NETWORK AVAILABLE
+[RideShield Semi-Final Judge Demo] Expected text matched: "LTE: NETWORK AVAILABLE"
+  SMS: SENT SUCCESSFULLY
+[RideShield Semi-Final Judge Demo] Expected text matched: "SMS: SENT SUCCESSFULLY"
+ (SIMULATED MODEM)
+============================================
+
+
+[RESET] Demo state reset
+[RESET] New state: READY
+[RideShield Semi-Final Judge Demo] Expected text matched: "[RESET] New state: READY"
+[STATUS] state=READY worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[RideShield Semi-Final Judge Demo] Expected text matched: "GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK"
+[BLACKBOX] Frozen pre-event snapshot: 100 samples
+
+[CRASH] Candidate detected
+[RideShield Semi-Final Judge Demo] Expected text matched: "[CRASH] Candidate detected"
+[RideShield Semi-Final Judge Demo] delay 250ms
+[CRASH] Source: MPU6050
+[CRASH] Pre-event speed: 60.0 km/h
+[STATUS] state=VERIFYING worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[VERIFY] peakAccel=8.06g peakGyro=800dps speed=60.0 still=YES evidence=4
+[RideShield Semi-Final Judge Demo] Expected text matched: "[VERIFY] peakAccel=8.06g peakGyro=800dps speed=60.0 still=YES evidence=4"
+[CRASH] Candidate CONFIRMED by multi-factor check
+[COUNTDOWN] 10 seconds to cancel emergency alert
+[COUNTDOWN] 10
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 9
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 8
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 7
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 6
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 5
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 4
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 3
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 2
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 1
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 0
+[RideShield Semi-Final Judge Demo] Expected text matched: "[COUNTDOWN] 0"
+
+[EMERGENCY] Crash event CONFIRMED
+[EMERGENCY] Crash Event Severity Index: 65/100 -> MODERATE-ENERGY EVENT
+[RideShield Semi-Final Judge Demo] Expected text matched: "[EMERGENCY] Crash Event Severity Index: 65/100 -> MODERATE-ENERGY EVENT"
+[EMERGENCY] This is NOT a medical injury assessment.
+[SD] Event summary written to /events.csv
+[SD] Saved 100 frozen pre-event black-box samples
+
+============================================
+       RIDESHIELD EMERGENCY ALERT
+============================================
+  Event ID: 3
+  Event severity: MODERATE (65/100)
+  Pre-event speed: 60.0 km/h
+  GPS: LAST KNOWN
+[RideShield Semi-Final Judge Demo] Expected text matched: "GPS: LAST KNOWN"
+   6.927079, 79.861244  age=12.0s
+  LTE: NO NETWORK
+[RideShield Semi-Final Judge Demo] Expected text matched: "LTE: NO NETWORK"
+  SMS: QUEUED FOR RETRY
+[RideShield Semi-Final Judge Demo] Expected text matched: "SMS: QUEUED FOR RETRY"
+============================================
+
+[LTE] Network restored -> retrying queued emergency alert
+[RideShield Semi-Final Judge Demo] Expected text matched: "[LTE] Network restored -> retrying queued emergency alert"
+
+============================================
+       RIDESHIELD EMERGENCY ALERT
+============================================
+  Event ID: 3
+  Event severity: MODERATE (65/100)
+  Pre-event speed: 60.0 km/h
+  GPS: LAST KNOWN   6.927079, 79.861244  age=12.0s
+  LTE: NETWORK AVAILABLE
+[RideShield Semi-Final Judge Demo] Expected text matched: "LTE: NETWORK AVAILABLE"
+  SMS: SENT SUCCESSFULLY
+[RideShield Semi-Final Judge Demo] Expected text matched: "SMS: SENT SUCCESSFULLY"
+ (SIMULATED MODEM)
+============================================
+
+
+===== /events.csv =====
+[RideShield Semi-Final Judge Demo] Expected text matched: "===== /events.csv ====="
+event_id,time_ms,outcome,severity_score,severity_level,peak_accel_g,peak_gyro_dps,pre_speed_kph,stillness,gps_valid,latitude,longitude,lte_available
+1,5067,CANCELLED,48,MODERATE,6.08
+[RideShield Semi-Final Judge Demo] Expected text matched: "CANCELLED,48,MODERATE,6.08"
+,699.9,60.0,1,1,6.927079,79.861244,1
+2,17227,CONFIRMED,73,HIGH,10.05
+[RideShield Semi-Final Judge Demo] Expected text matched: "CONFIRMED,73,HIGH,10.05"
+,1000.0,60.0,1,1,6.927079,79.861244,1
+3,29237,CONFIRMED,65,MODERATE,8.06
+[RideShield Semi-Final Judge Demo] Expected text matched: "CONFIRMED,65,MODERATE,8.06"
+,799.9,60.0,1,1,6.927079,79.861244,0
+===== END =====
+[RideShield Semi-Final Judge Demo] Expected text matched: "===== END ====="
+[RideShield Semi-Final Judge Demo] Scenario completed successfully
