@@ -1,0 +1,443 @@
+Wokwi CLI v0.28.0 (872b270d5383)
+Connected to Wokwi Simulation API 1.0.0-20261002-gd6cd65f4
+Starting simulation...
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce3808,len:0x370
+load:0x403c9700,len:0x900
+load:0x403cc700,len:0x2364
+entry 0x403c98ac
+
+================================================
+     RideShield Core Safety POC - Wokwi
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "RideShield Core Safety POC - Wokwi"
+================================================
+[BOOT] MPU6050: OK (±16g, ±2000dps)
+[BOOT] microSD: OK
+[BOOT] GPS/LTE/head/strap are automatable interface-level test inputs
+[BOOT] X=Crash Test button, C=Cancel, R=Reset Demo
+[BOOT] Serial commands: L=events, B=black-box, R=reset, H=help
+
+[STATUS] state=NOT_WORN worn=NO head=YES strap=NO
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "head=YES strap=NO"
+ | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=0.0km/h | LTE=OFFLINE | SD=OK
+[CRASH] Event ignored: helmet is not verified as worn
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "Event ignored: helmet is not verified as worn"
+[RideShield Full Automated Semi-Final Demo - Race Safe] delay 600ms
+E (1940) ledc: ledc_get_duty(745): LEDC is not initialized
+[HELMET] State changed -> READY
+[STATUS] state=READY worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "LTE=ONLINE"
+ | SD=OK
+[BLACKBOX] Frozen pre-event snapshot: 31 samples
+
+[CRASH] Candidate detected
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "Candidate detected"
+[RideShield Full Automated Semi-Final Demo - Race Safe] delay 250ms
+[CRASH] Source: MPU6050
+[CRASH] Pre-event speed: 60.0 km/h
+[STATUS] state=VERIFYING worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[VERIFY] peakAccel=6.08g peakGyro=700dps speed=60.0 still=YES evidence=4
+[CRASH] Candidate CONFIRMED by multi-factor check
+[COUNTDOWN] 10 seconds to cancel emergency alert
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "10 seconds to cancel emergency alert"
+[RideShield Full Automated Semi-Final Demo - Race Safe] delay 2500ms
+[COUNTDOWN] 10
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 9
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 8
+
+[CANCEL] Rider cancelled the emergency alert
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "Rider cancelled the emergency alert"
+[CANCEL] Event score for record: 48/100 MODERATE
+[SD] Event summary written to /events.csv
+[SD] Saved 31 frozen pre-event black-box samples
+[STATUS] state=READY
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "state=READY"
+ worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[BLACKBOX] Frozen pre-event snapshot: 100 samples
+
+[CRASH] Candidate detected
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "Candidate detected"
+[RideShield Full Automated Semi-Final Demo - Race Safe] delay 250ms
+[CRASH] Source: MPU6050
+[CRASH] Pre-event speed: 60.0 km/h
+[STATUS] state=VERIFYING worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[VERIFY] peakAccel=10.05g peakGyro=1000dps speed=60.0 still=YES evidence=4
+[CRASH] Candidate CONFIRMED by multi-factor check
+[COUNTDOWN] 10 seconds to cancel emergency alert
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "10 seconds to cancel emergency alert"
+[COUNTDOWN] 10
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 9
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 8
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 7
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 6
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 5
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 4
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 3
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 2
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 1
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=FIX speed=60.0km/h | LTE=ONLINE | SD=OK
+[COUNTDOWN] 0
+
+[EMERGENCY] Crash event CONFIRMED
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "Crash event CONFIRMED"
+[EMERGENCY] Crash Event Severity Index: 73/100 -> HIGH-ENERGY EVENT
+[EMERGENCY] This is NOT a medical injury assessment.
+[SD] Event summary written to /events.csv
+[SD] Saved 100 frozen pre-event black-box samples
+
+============================================
+       RIDESHIELD EMERGENCY ALERT
+============================================
+  Event ID: 2
+  Event severity: HIGH (73/100)
+  Pre-event speed: 60.0 km/h
+  GPS: CURRENT FIX
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "GPS: CURRENT FIX"
+  6.927079, 79.861244
+  LTE: NETWORK AVAILABLE
+  SMS: SENT SUCCESSFULLY
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "SMS: SENT SUCCESSFULLY"
+ (SIMULATED MODEM)
+============================================
+
+
+[RESET] Demo state reset
+[RESET] New state: READY
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "New state: READY"
+[STATUS] state=READY worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "LTE=OFFLINE"
+ | SD=OK
+[BLACKBOX] Frozen pre-event snapshot: 100 samples
+
+[CRASH] Candidate detected
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "Candidate detected"
+[RideShield Full Automated Semi-Final Demo - Race Safe] delay 250ms
+[CRASH] Source: MPU6050
+[CRASH] Pre-event speed: 60.0 km/h
+[STATUS] state=VERIFYING worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[VERIFY] peakAccel=8.06g peakGyro=800dps speed=60.0 still=YES evidence=4
+[CRASH] Candidate CONFIRMED by multi-factor check
+[COUNTDOWN] 10 seconds to cancel emergency alert
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "10 seconds to cancel emergency alert"
+[COUNTDOWN] 10
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 9
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 8
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 7
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 6
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 5
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 4
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 3
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 2
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 1
+[STATUS] state=COUNTDOWN worn=YES head=YES strap=YES | MPU a=1.00g gyro=0dps | GPS=NO_FIX speed=60.0km/h | LTE=OFFLINE | SD=OK
+[COUNTDOWN] 0
+
+[EMERGENCY] Crash event CONFIRMED
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "Crash event CONFIRMED"
+[EMERGENCY] Crash Event Severity Index: 65/100 -> MODERATE-ENERGY EVENT
+[EMERGENCY] This is NOT a medical injury assessment.
+[SD] Event summary written to /events.csv
+[SD] Saved 100 frozen pre-event black-box samples
+
+============================================
+       RIDESHIELD EMERGENCY ALERT
+============================================
+  Event ID: 3
+  Event severity: MODERATE (65/100)
+  Pre-event speed: 60.0 km/h
+  GPS: LAST KNOWN
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "GPS: LAST KNOWN"
+   6.927079, 79.861244  age=12.0s
+  LTE: NO NETWORK
+  SMS: QUEUED FOR RETRY
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "SMS: QUEUED FOR RETRY"
+============================================
+
+[LTE] Network restored -> retrying queued emergency alert
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "Network restored -> retrying queued emergency alert"
+
+============================================
+       RIDESHIELD EMERGENCY ALERT
+============================================
+  Event ID: 3
+  Event severity: MODERATE (65/100)
+  Pre-event speed: 60.0 km/h
+  GPS: LAST KNOWN   6.927079, 79.861244  age=12.0s
+  LTE: NETWORK AVAILABLE
+  SMS: SENT SUCCESSFULLY
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "SMS: SENT SUCCESSFULLY"
+ (SIMULATED MODEM)
+============================================
+
+
+===== /events.csv =====
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "===== /events.csv ====="
+event_id,time_ms,outcome,severity_score,severity_level,peak_accel_g,peak_gyro_dps,pre_speed_kph,stillness,gps_valid,latitude,longitude,lte_available
+1,5767,CANCELLED,48,MODERATE,6.08,699.9,60.0,1,1,6.927079,79.861244,1
+2,17227,CONFIRMED,73,HIGH,10.05,1000.0,60.0,1,1,6.927079,79.861244,1
+3,29237,CONFIRMED,65,MODERATE,8.06,799.9,60.0,1,1,6.927079,79.861244,0
+===== END =====
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "===== END ====="
+
+
+===== /blackbox.csv =====
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "===== /blackbox.csv ====="
+event_id,sample_ms,ax_g,ay_g,az_g,gx_dps,gy_dps,gz_dps,speed_kph,helmet_worn
+1,541,0.000,0.000,1.000,0.00,0.00,0.00,0.0,0
+1,591,0.000,0.000,1.000,0.00,0.00,0.00,0.0,0
+1,641,0.000,0.000,1.000,0.00,0.00,0.00,0.0,0
+1,691,0.000,0.000,1.000,0.00,0.00,0.00,0.0,0
+1,741,0.000,0.000,1.000,0.00,0.00,0.00,0.0,0
+1,791,0.000,0.000,1.000,0.00,0.00,0.00,0.0,0
+1,841,0.000,0.000,1.000,0.00,0.00,0.00,0.0,0
+1,891,0.000,0.000,1.000,0.00,0.00,0.00,0.0,0
+1,941,0.000,0.000,1.000,0.00,0.00,0.00,0.0,0
+1,991,0.000,0.000,1.000,0.00,0.00,0.00,0.0,0
+1,1042,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1093,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1143,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1193,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1243,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1293,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1343,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1393,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1443,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1493,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1543,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1593,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1643,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1693,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1743,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1793,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1843,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1893,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1943,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,1993,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+1,2043,6.000,0.000,1.000,0.00,699.94,0.00,60.0,1
+2,891,0.000,0.000,1.000,0.00,0.00,0.00,0.0,0
+2,941,0.000,0.000,1.000,0.00,0.00,0.00,0.0,0
+2,991,0.000,0.000,1.000,0.00,0.00,0.00,0.0,0
+2,1042,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1093,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1143,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1193,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1243,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1293,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1343,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1393,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1443,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1493,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1543,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1593,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1643,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1693,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1743,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1793,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1843,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1893,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1943,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,1993,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,2043,6.000,0.000,1.000,0.00,699.94,0.00,60.0,1
+2,2093,6.000,0.000,1.000,0.00,699.94,0.00,60.0,1
+2,2143,6.000,0.000,1.000,0.00,699.94,0.00,60.0,1
+2,2193,6.000,0.000,1.000,0.00,699.94,0.00,60.0,1
+2,2243,6.000,0.000,1.000,0.00,699.94,0.00,60.0,1
+2,2293,6.000,0.000,1.000,0.00,699.94,0.00,60.0,1
+2,2343,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,2393,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,2443,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,2493,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,2543,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,2593,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,2643,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,2693,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,2743,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,2793,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,2843,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,2893,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,2943,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,2993,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3043,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3093,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3143,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3193,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3243,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3293,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3343,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3393,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3443,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3493,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3543,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3593,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3643,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3693,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3743,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3793,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3843,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3893,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3943,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,3993,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4043,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4093,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4143,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4193,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4243,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4293,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4343,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4393,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4443,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4493,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4543,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4593,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4643,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4693,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4743,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4793,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4843,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4893,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4943,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,4993,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,5043,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,5093,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,5143,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,5193,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,5243,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,5293,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,5343,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,5393,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,5443,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,5493,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,5543,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,5593,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,5643,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,5693,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,5743,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,5955,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+2,6007,10.000,0.000,1.000,0.00,1000.00,0.00,60.0,1
+3,12557,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,12607,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,12657,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,12707,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,12757,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,12807,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,12857,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,12907,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,12957,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13007,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13057,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13107,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13157,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13207,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13257,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13307,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13357,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13407,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13457,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13507,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13557,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13607,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13657,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13707,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13757,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13807,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13857,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13907,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,13957,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14007,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14057,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14107,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14157,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14207,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14257,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14307,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14357,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14407,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14457,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14507,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14557,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14607,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14657,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14707,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14757,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14807,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14857,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14907,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,14957,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15007,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15057,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15107,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15157,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15207,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15257,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15307,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15357,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15407,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15457,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15507,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15557,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15607,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15657,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15707,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15757,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15807,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15857,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15907,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,15957,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16007,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16057,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16107,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16157,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16207,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16257,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16307,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16357,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16407,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16457,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16507,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16557,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16607,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16657,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16707,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16757,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16807,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16857,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16907,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,16957,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,17007,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,17057,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,17107,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,17157,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,17207,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,17767,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,17817,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,17867,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,17917,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,17967,0.000,0.000,1.000,0.00,0.00,0.00,60.0,1
+3,18017,8.000,0.000,1.000,0.00,799.94,0.00,60.0,1
+===== END =====
+[RideShield Full Automated Semi-Final Demo - Race Safe] Expected text matched: "===== END ====="
+[RideShield Full Automated Semi-Final Demo - Race Safe] Scenario completed successfully
