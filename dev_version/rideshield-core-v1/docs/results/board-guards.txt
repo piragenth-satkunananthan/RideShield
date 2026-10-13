@@ -1,0 +1,3 @@
+PASS default accepted
+PASS bench SMS rejected
+PASS missing recipient rejected

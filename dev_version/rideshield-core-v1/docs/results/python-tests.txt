@@ -1,0 +1,10 @@
+test_complete_before_bad_tail (test_tools.ToolsTests.test_complete_before_bad_tail) ... ok
+test_crc (test_tools.ToolsTests.test_crc) ... ok
+test_no_sequence_wrap (test_tools.ToolsTests.test_no_sequence_wrap) ... ok
+test_token_length (test_tools.ToolsTests.test_token_length) ... ok
+test_wire_golden_vector (test_tools.ToolsTests.test_wire_golden_vector) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.000s
+
+OK

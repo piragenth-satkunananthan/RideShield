@@ -1,0 +1,5 @@
+PASS impact -> deliberate cancel -> monitor
+PASS impact -> countdown -> SMS job: TEST RS-00000001-00000002-0002 SUSPECTED EVENT; LOCATION UNAVAILABLE. Contact rider.
+PASS SOS with missing IMU
+PASS rear observation confirmed then expires
+No hardware used; no SMS sent.

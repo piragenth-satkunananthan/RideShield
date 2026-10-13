@@ -1,0 +1,8 @@
+{
+  "flash_settings": { "flash_size": "16MB" },
+  "flash_files": {
+    "0x0": ".pio/build/esp32s3_wokwi/bootloader.bin",
+    "0x8000": ".pio/build/esp32s3_wokwi/partitions.bin",
+    "0x10000": ".pio/build/esp32s3_wokwi/firmware.bin"
+  }
+}

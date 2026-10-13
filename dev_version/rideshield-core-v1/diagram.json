@@ -1,0 +1,202 @@
+{
+  "version": 1,
+  "author": "RideShield",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-s3-devkitc-1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {
+        "flashSize": "16",
+        "psramSize": "8",
+        "psramType": "octal",
+        "serialInterface": "USB_SERIAL_JTAG"
+      }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "impact",
+      "top": 0,
+      "left": 260,
+      "attrs": {
+        "color": "orange",
+        "label": "IMPACT"
+      }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "cancel",
+      "top": 100,
+      "left": 260,
+      "attrs": {
+        "color": "green",
+        "label": "CANCEL"
+      }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "sos",
+      "top": 200,
+      "left": 260,
+      "attrs": {
+        "color": "red",
+        "label": "SOS"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "buzzer",
+      "top": 0,
+      "left": -220,
+      "attrs": {
+        "color": "red",
+        "label": "BUZZER OUTPUT"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rbuzzer",
+      "top": 40,
+      "left": -170,
+      "attrs": {
+        "value": "330"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "motor",
+      "top": 100,
+      "left": -220,
+      "attrs": {
+        "color": "yellow",
+        "label": "VIBRATION OUTPUT"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rmotor",
+      "top": 140,
+      "left": -170,
+      "attrs": {
+        "value": "330"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "status",
+      "top": 200,
+      "left": -220,
+      "attrs": {
+        "color": "green",
+        "label": "STATUS"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rstatus",
+      "top": 240,
+      "left": -170,
+      "attrs": {
+        "value": "330"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "impact:1.l",
+      "esp:4",
+      "green",
+      []
+    ],
+    [
+      "impact:2.l",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "cancel:1.l",
+      "esp:21",
+      "green",
+      []
+    ],
+    [
+      "cancel:2.l",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "sos:1.l",
+      "esp:14",
+      "green",
+      []
+    ],
+    [
+      "sos:2.l",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:39",
+      "rbuzzer:1",
+      "green",
+      []
+    ],
+    [
+      "rbuzzer:2",
+      "buzzer:A",
+      "green",
+      []
+    ],
+    [
+      "buzzer:C",
+      "esp:GND.2",
+      "black",
+      []
+    ],
+    [
+      "esp:40",
+      "rmotor:1",
+      "green",
+      []
+    ],
+    [
+      "rmotor:2",
+      "motor:A",
+      "green",
+      []
+    ],
+    [
+      "motor:C",
+      "esp:GND.2",
+      "black",
+      []
+    ],
+    [
+      "esp:41",
+      "rstatus:1",
+      "green",
+      []
+    ],
+    [
+      "rstatus:2",
+      "status:A",
+      "green",
+      []
+    ],
+    [
+      "status:C",
+      "esp:GND.2",
+      "black",
+      []
+    ]
+  ],
+  "serialMonitor": {
+    "display": "always",
+    "newline": "lf"
+  }
+}
