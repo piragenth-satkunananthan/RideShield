@@ -3,6 +3,8 @@
 #include <cstdio>
 #include <string>
 #include <initializer_list>
+// Match the ESP32 ROM identifier so pin-name collisions fail in host tests.
+enum STATUS { CANCEL };
 #define LOW 0
 #define HIGH 1
 #define INPUT_PULLUP 2

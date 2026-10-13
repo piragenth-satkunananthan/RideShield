@@ -6,7 +6,7 @@
 using namespace rs;
 namespace {
 Core core;
-constexpr int IMPACT=4,CANCEL=21,SOS=14,BUZZER_LED=39,MOTOR_LED=40,STATUS_LED=41;
+constexpr int IMPACT=4,PIN_CANCEL=21,SOS=14,BUZZER_LED=39,MOTOR_LED=40,STATUS_LED=41;
 bool imuOn=true,impactWas=false,serialCancel=false,serialSos=false;
 unsigned impactFrames=0;float injectedG=0;
 Presence presence=Presence::Unknown;
@@ -42,9 +42,9 @@ void command(const char* s,Ms now){
 }
 void setup(){
  Serial.begin(115200);
- for(int p:{IMPACT,CANCEL,SOS})pinMode(p,INPUT_PULLUP);
+ for(int p:{IMPACT,PIN_CANCEL,SOS})pinMode(p,INPUT_PULLUP);
  for(int p:{BUZZER_LED,MOTOR_LED,STATUS_LED}){digitalWrite(p,LOW);pinMode(p,OUTPUT);}
- const Ms now=nowMs();core.begin(now,1,1);core.tick(now,digitalRead(CANCEL)==LOW,digitalRead(SOS)==LOW);nextSample=now;
+ const Ms now=nowMs();core.begin(now,1,1);core.tick(now,digitalRead(PIN_CANCEL)==LOW,digitalRead(SOS)==LOW);nextSample=now;
  Serial.println("RIDESHIELD WOKWI CORE HARNESS - synthetic IMU, no real SMS. Type help.");
 }
 void loop(){
@@ -53,7 +53,7 @@ void loop(){
  if(now<nextSample){delay(1);return;}nextSample=now+5;
  const bool impact=digitalRead(IMPACT)==LOW;if(impact&&!impactWas){impactFrames=1;injectedG=7;}impactWas=impact;
  core.head(presence,now);
- core.tick(now,serialCancel||digitalRead(CANCEL)==LOW,serialSos||digitalRead(SOS)==LOW);
+ core.tick(now,serialCancel||digitalRead(PIN_CANCEL)==LOW,serialSos||digitalRead(SOS)==LOW);
  if(imuOn){Motion m;m.ms=now;if(impactFrames){m.ax=injectedG;--impactFrames;}core.motion(m,now);}else core.imuUnavailable(now);
  if(now<visionUntil){syntheticVision.expiresMs=now+500;core.vision(syntheticVision,rear);}
  const Output o=core.output(now);digitalWrite(BUZZER_LED,o.buzzer);digitalWrite(MOTOR_LED,o.left);digitalWrite(STATUS_LED,o.led);
