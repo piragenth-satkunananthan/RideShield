@@ -34,8 +34,9 @@
 // breakout before enabling optional peripherals or wiring high-current loads.
 // GPIO34 is input-only and is intentionally used as UART RX, never as TX.
 namespace board {
-constexpr int SDA=21,SCL=22,MPU_ADDRESS=0x68;
+constexpr int SDA=21,SCL=22,MPU_ADDRESS=0x68,TOF_ADDRESS=0x29;
 constexpr int CANCEL=32,SOS=33;
+constexpr int IR_SIGNAL=36;
 constexpr int BUZZER=25,LEFT_MOTOR=26,RIGHT_MOTOR=-1,LED=27;
 constexpr int GPS_RX=16,GPS_TX=17,GPS_BAUD=9600;
 constexpr int LTE_RX=34,LTE_TX=13,LTE_BAUD=115200;
@@ -47,7 +48,7 @@ static_assert(sizeof(RS_WIFI_PASSWORD)>=9&&sizeof(RS_WIFI_PASSWORD)<=64,"AP pass
 static_assert(!RS_ALLOW_SMS||(RS_ENABLE_LTE&&!RS_BENCH),"SMS requires LTE and hardware profile");
 static_assert(!RS_ALLOW_SMS||(sizeof(RS_SMS_NUMBER)>=10&&sizeof(RS_SMS_NUMBER)<=17),"Configure an E.164 recipient before enabling SMS");
 constexpr bool validBoardPins(){
- constexpr int pins[]={board::SDA,board::SCL,board::CANCEL,board::SOS,
+ constexpr int pins[]={board::SDA,board::SCL,board::CANCEL,board::SOS,board::IR_SIGNAL,
  RS_ENABLE_OUTPUTS?board::BUZZER:-1,RS_ENABLE_OUTPUTS?board::LEFT_MOTOR:-1,
  RS_ENABLE_OUTPUTS?board::RIGHT_MOTOR:-1,RS_ENABLE_OUTPUTS?board::LED:-1,
  RS_ENABLE_GPS?board::GPS_RX:-1,RS_ENABLE_GPS?board::GPS_TX:-1,

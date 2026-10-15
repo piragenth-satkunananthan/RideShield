@@ -28,7 +28,7 @@ struct Result{Id id;uint32_t attempt;SendResult outcome;};
 struct Journal{uint8_t bytes[CHECKPOINT_SIZE];};
 struct Capture{const MotionRecord* records;size_t count;Id id;bool truncated;};
 struct Command{enum Type{Impact,Candidate,Imu,Cancel,Sos,Head,Ack,Close,Gps}type;int value=0;double lat=0,lon=0;};
-struct Status{Ms now,remaining,lastMotionAt;State state;SendState send;Warning warning;bool imu,phone,clock,front,rear;uint8_t imuId;float accelG,gyroDps;uint32_t gaps,dropped,rejected,missed;};
+struct Status{Ms now,remaining,lastMotionAt;State state;SendState send;Warning warning;bool imu,phone,clock,front,rear,tofAck;uint8_t imuId,irRaw;float accelG,gyroDps;uint32_t gaps,dropped,rejected,missed;};
 QueueHandle_t visionQ,smsQ,resultQ,journalQ,eventQ,captureQ,captureDoneQ,commandQ,gpsQ;
 std::atomic<bool> sdFault{false},journalFault{false},captureFault{false},networkFault{false},recoveryFault{false};
 std::atomic<uint32_t> eventDrops{0};
@@ -48,6 +48,7 @@ void controllerTask(void*){
  bool benchImu=true,cancel=false,sos=false;Presence presence=Presence::Unknown;unsigned impactFrames=0;float impactG=0;
  float lastAccelG=0,lastGyroDps=0;Ms lastMotionAt=0;
  uint32_t journalRevision=UINT32_MAX;Id captured{};VisionPair pair{};
+ bool tofAck=false;Ms nextTofProbe=0;
  for(;;){
   const Ms now=clockMs();Command cmd;
   for(unsigned i=0;i<4&&xQueueReceive(commandQ,&cmd,0)==pdTRUE;++i){
@@ -89,6 +90,12 @@ void controllerTask(void*){
     const Id id=core.incident().id;if(id.sequence&&!(id==captured)){recorder->trigger(id,now);captured=id;}
    }
   }
+#if !RS_BENCH
+  // One bounded I2C address probe per second. This checks bus presence only;
+  // it does not take a range measurement or affect helmet-worn decisions.
+  if(now>=nextTofProbe){Wire.beginTransmission(board::TOF_ADDRESS);
+   tofAck=Wire.endTransmission()==0;nextTofProbe=now+1000;}
+#endif
   const Id id=core.incident().id;if(id.sequence&&!(id==captured)){recorder->trigger(id,now);captured=id;}
   if(xQueuePeek(visionQ,&pair,0)==pdTRUE){core.vision(pair.front,false);core.vision(pair.rear,true);}
   GpsFix fix;if(xQueueReceive(gpsQ,&fix,0)==pdTRUE)core.gps(fix,now);
@@ -102,7 +109,7 @@ void controllerTask(void*){
   recorder->tick(now);Capture capture;
   if(recorder->acquire(capture.records,capture.count,capture.id,capture.truncated)&&xQueueSend(captureQ,&capture,0)!=pdTRUE){captureFault=true;recorder->release();}
   const bool fresh=now>=pair.published&&now-pair.published<=3000;
-  Status status{now,core.countdownRemaining(now),lastMotionAt,core.state(),core.sendState(),output.warning,core.imuHealthy(),fresh&&pair.online,fresh&&pair.clock,pair.front.valid&&now<pair.front.expiresMs,pair.rear.valid&&now<pair.rear.expiresMs,imu.identity(),lastAccelG,lastGyroDps,core.sampleGaps(),core.droppedEvents()+eventDrops.load(),pair.rejected,recorder->missedCaptures()};
+  Status status{now,core.countdownRemaining(now),lastMotionAt,core.state(),core.sendState(),output.warning,core.imuHealthy(),fresh&&pair.online,fresh&&pair.clock,pair.front.valid&&now<pair.front.expiresMs,pair.rear.valid&&now<pair.rear.expiresMs,tofAck,imu.identity(),uint8_t(digitalRead(board::IR_SIGNAL)),lastAccelG,lastGyroDps,core.sampleGaps(),core.droppedEvents()+eventDrops.load(),pair.rejected,recorder->missedCaptures()};
   portENTER_CRITICAL(&statusMux);sharedStatus=status;portEXIT_CRITICAL(&statusMux);
   esp_task_wdt_reset();vTaskDelayUntil(&wake,pdMS_TO_TICKS(5));
  }
@@ -165,7 +172,7 @@ void modemTask(void*){
  }
 }
 Status statusSnapshot(){portENTER_CRITICAL(&statusMux);Status s=sharedStatus;portEXIT_CRITICAL(&statusMux);return s;}
-void printStatus(){auto s=statusSnapshot();Serial.printf("STATE=%s SEND=%s ALERT=%s IMU=%d imu_id=0x%02x sample_seen=%d a=%.2fg gyro=%.0fdps sample_age=%llums PHONE=%d CLOCK=%d FRONT=%d REAR=%d remaining=%llu gaps=%lu drops=%lu rejected=%lu missed=%lu\n",stateName(s.state),sendName(s.send),warningName(s.warning),s.imu,unsigned(s.imuId),s.lastMotionAt!=0,s.accelG,s.gyroDps,(unsigned long long)(s.lastMotionAt&&s.now>=s.lastMotionAt?s.now-s.lastMotionAt:0),s.phone,s.clock,s.front,s.rear,(unsigned long long)s.remaining,(unsigned long)s.gaps,(unsigned long)s.dropped,(unsigned long)s.rejected,(unsigned long)s.missed);}
+void printStatus(){auto s=statusSnapshot();Serial.printf("STATE=%s SEND=%s ALERT=%s IMU=%d imu_id=0x%02x sample_seen=%d a=%.2fg gyro=%.0fdps sample_age=%llums TOF_ACK=%d IR_RAW=%u PHONE=%d CLOCK=%d FRONT=%d REAR=%d remaining=%llu gaps=%lu drops=%lu rejected=%lu missed=%lu\n",stateName(s.state),sendName(s.send),warningName(s.warning),s.imu,unsigned(s.imuId),s.lastMotionAt!=0,s.accelG,s.gyroDps,(unsigned long long)(s.lastMotionAt&&s.now>=s.lastMotionAt?s.now-s.lastMotionAt:0),s.tofAck,unsigned(s.irRaw),s.phone,s.clock,s.front,s.rear,(unsigned long long)s.remaining,(unsigned long)s.gaps,(unsigned long)s.dropped,(unsigned long)s.rejected,(unsigned long)s.missed);}
 void serialCommand(const char* line){
  Command c{};bool valid=true;
  if(!strcmp(line,"help")){Serial.println("status | ack | close | BENCH: impact | candidate | imu on/off | cancel down/up | sos down/up | head present/absent/unknown | gps LAT LON");return;}
@@ -228,6 +235,7 @@ void fatal(const char* message){applyOutput({});Serial.println(message);for(;;)d
 void setup(){
  Serial.begin(115200);Serial.printf("RideShield NodeMCU-32S bring-up; live SMS %s\n",RS_ALLOW_SMS?"enabled":"disabled");
  pinMode(board::CANCEL,INPUT_PULLUP);pinMode(board::SOS,INPUT_PULLUP);
+ pinMode(board::IR_SIGNAL,INPUT); // GPIO36 has no internal pull-up.
 #if RS_ENABLE_OUTPUTS
  for(int p:{board::BUZZER,board::LEFT_MOTOR,board::RIGHT_MOTOR,board::LED})if(p>=0){digitalWrite(p,LOW);pinMode(p,OUTPUT);}
 #endif

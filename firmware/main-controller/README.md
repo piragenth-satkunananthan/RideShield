@@ -27,6 +27,18 @@ copies until the projects share a single library source.
    gateway on port 81. Its default password and 32-byte token are placeholders;
    put private replacements in ignored `include/local_config.h` before field use.
 
+## Connected-sensor diagnostics
+
+With the MPU module already working, a VL53L0X breakout may share SDA (GPIO21)
+and SCL (GPIO22), with common ground and a supply rated for that breakout.
+The KY-033 `S`/`OUT` signal may connect to GPIO36, `-` to GND and `+` to a
+verified 3.3 V supply. Inspect the labels on your own module before powering.
+After upload, wait a second and type `status` twice: `TOF_ACK=1` means a device
+acknowledged I2C address `0x29`; `IR_RAW=0/1` shows the digital pin level.
+Try changing the KY-033's view of a test surface and check the raw level.
+`TOF_ACK` does **not** verify distance measurements; `IR_RAW` does **not** verify
+eye closure. Neither diagnostic currently changes the crash state machine.
+
 The default build uses `RS_BENCH=0` and reads accelerometer and gyroscope
 samples from either ID above; a magnetometer is not used. The firmware does not
 inject synthetic impacts. It prints `SMS DISABLED` for an incident and never sends a
@@ -38,6 +50,8 @@ dropping a wearable helmet or simulating a real collision.
 | Function | GPIO | Default |
 |---|---:|---|
 | MPU-9250 SDA / SCL | 21 / 22 | Enabled |
+| VL53L0X SDA / SCL | 21 / 22 | Address probe only |
+| KY-033 signal | 36 | Raw digital input only |
 | Cancel / SOS buttons | 32 / 33 | Pull-up inputs |
 | Buzzer / left haptic driver / LED | 25 / 26 / 27 | Disabled |
 | GNSS RX / TX (ESP32 directions) | 16 / 17 | Disabled |
