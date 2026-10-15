@@ -7,7 +7,8 @@ RideShield is an intelligent motorcycle helmet system that integrates sensor tel
 ### Critical Safety Invariant:
 ```text
 +---------------------------------------------------------------------------------+
-|                                 MAIN ESP32-S3 CORE                              |
+|                    MAIN SAFETY CORE (NodeMCU ESP-32S)                           |
+|                    Wi-Fi SoftAP Host: 192.168.4.1:81                            |
 |                                                                                 |
 |  [MPU6050 IMU]   --> Crash State Machine (Monitor/Degraded/Verify/Countdown)    |
 |  [Head Sensor]   --> Helmet-Worn Presence Detection                             |
@@ -21,9 +22,9 @@ RideShield is an intelligent motorcycle helmet system that integrates sensor tel
 +---------------------------------------------------------------------------------+
 |                               ANDROID PHONE NODE                                |
 |                                                                                 |
-|  [Wi-Fi AP]      --> Joined to Helmet SoftAP (192.168.4.1:81)                    |
-|  [Front Stream]  --> Ingests timestamped MJPEG from Front ESP32-S3 (192.168.4.2)|
-|  [Rear Stream]   --> Ingests timestamped MJPEG from Rear ESP32-S3 (192.168.4.3) |
+|  [Wi-Fi AP]      --> Joined to NodeMCU ESP-32S SoftAP (192.168.4.1:81)           |
+|  [Front Stream]  --> Ingests timestamped MJPEG from Front Camera (192.168.4.2)  |
+|  [Rear Stream]   --> Ingests timestamped MJPEG from Rear Camera (192.168.4.3)   |
 |  [YOLO Model]    --> On-device pothole inference (best.onnx via ONNX Runtime)   |
 |  [Bounded Queue] --> Drops stale frames; guarantees <= 500ms freshness envelope |
 |  [HUD Display]   --> Live previews, bounding boxes, latencies, telemetry cards  |
@@ -33,6 +34,24 @@ RideShield is an intelligent motorcycle helmet system that integrates sensor tel
 |        producer and HUD telemetry monitor.                                      |
 +---------------------------------------------------------------------------------+
 ```
+
+### NodeMCU ESP-32S Hardware Specifics (Main Safety Core):
+- **SoC Architecture**: Dual-Core Xtensa 32-bit LX6 @ 240 MHz (ESP-WROOM-32 module).
+- **Wi-Fi SoftAP Configuration**:
+  - The NodeMCU ESP-32S acts as the central Wi-Fi Access Point (`RideShield-XXXX-BENCH` or `CORE`).
+  - IP Address: `192.168.4.1`, WebSocket Server Port: `81`.
+  - SoftAP Station Capacity: 4 concurrent devices (1 Phone + 1 Front Camera + 1 Rear Camera).
+- **Memory Model**:
+  - 520 KB internal SRAM, 4 MB external SPI Flash (no external PSRAM).
+  - The firmware in `src/main.cpp` automatically activates the internal SRAM ring-buffer fallback (`preCount=200`, `eventCount=1402`, `postMs=6000`), ensuring complete blackbox recording stability without external PSRAM.
+- **Recommended NodeMCU ESP-32S Pinout**:
+  - **I2C Bus (MPU6050 & VL53L0X)**: SDA = `GPIO 21`, SCL = `GPIO 22`
+  - **Hardware SPI (MicroSD Blackbox)**: SCK = `GPIO 18`, MISO = `GPIO 19`, MOSI = `GPIO 23`, CS = `GPIO 5`
+  - **UART2 (SIM800L LTE Modem)**: RX = `GPIO 16`, TX = `GPIO 17`
+  - **UART1 (NEO-6M GPS Module)**: RX = `GPIO 32`, TX = `GPIO 33`
+  - **Switches & Inputs**: Cancel = `GPIO 25`, SOS Touch = `GPIO 26`, Strap Reed Switch = `GPIO 27`
+  - **Alert Actuators**: Buzzer = `GPIO 4`, Vibration Motor = `GPIO 14`, Warning LEDs = `GPIO 13`
+  - *Caution*: Do NOT use `GPIO 6..11` on NodeMCU ESP-32S (reserved for integrated SPI flash).
 
 ---
 

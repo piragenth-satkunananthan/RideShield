@@ -6,7 +6,7 @@
     <string name="pothole_model_title">Pothole Detection</string>
     <string name="wet_road_model_title">Wet Road Detection</string>
     <string name="rear_vehicle_model_title">Rear Vehicle Tracking</string>
-    <string name="controller_status_title">ESP32-S3 Safety Core</string>
+    <string name="controller_status_title">ESP32 Safety Core (NodeMCU ESP-32S)</string>
     <string name="status_unavailable">UNAVAILABLE</string>
     <string name="status_connected">CONNECTED</string>
     <string name="status_disconnected">DISCONNECTED</string>

@@ -110,7 +110,7 @@ fun DashboardScreen(viewModel: MainViewModel) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "SAFETY CORE NOTICE: Crash detection, SOS SMS, and warning buzzers stay strictly autonomous on the ESP32-S3 microcontroller.",
+                    text = "SAFETY CORE NOTICE: Crash detection, SOS SMS, and warning buzzers stay strictly autonomous on the NodeMCU ESP-32S microcontroller.",
                     style = Typography.labelSmall,
                     color = AccentCyan
                 )

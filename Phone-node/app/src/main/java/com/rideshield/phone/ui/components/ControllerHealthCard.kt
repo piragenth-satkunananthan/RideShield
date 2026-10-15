@@ -33,7 +33,7 @@ fun ControllerHealthCard(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "ESP32-S3 Safety Core (RSW1)", style = Typography.titleMedium)
+            Text(text = "NodeMCU ESP-32S Safety Core (RSW1)", style = Typography.titleMedium)
 
             val statusColor = when (telemetry.status) {
                 ConnectionStatus.CONNECTED_ACTIVE -> StatusGreen

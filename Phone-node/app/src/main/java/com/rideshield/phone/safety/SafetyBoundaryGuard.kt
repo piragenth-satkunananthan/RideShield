@@ -5,7 +5,7 @@ package com.rideshield.phone.safety
  *
  * CRITICAL ARCHITECTURAL INVARIANT:
  * Crash detection, incident confirmation, SOS emergency SMS dispatch, blackbox logging,
- * and helmet haptic/buzzer alerts reside EXCLUSIVELY on the main ESP32-S3 safety core.
+ * and helmet haptic/buzzer alerts reside EXCLUSIVELY on the main NodeMCU ESP-32S safety core.
  *
  * Source of truth:
  *  - docs/ARCHITECTURE.md: "The main safety controller and computer-vision nodes are separated

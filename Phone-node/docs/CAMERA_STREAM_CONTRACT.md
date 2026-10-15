@@ -1,6 +1,6 @@
-# RideShield ESP32-S3 Camera Stream Interface Contract (v1.0)
+# RideShield Camera Stream Interface Contract (v1.0)
 
-This document specifies the communication and streaming contract between the separate **Front and Rear ESP32-S3 Camera Nodes** and the **RideShield Android Phone Application**.
+This document specifies the communication and streaming contract between the separate **Front and Rear Camera Nodes** and the **RideShield Android Phone Application**, operating on the **NodeMCU ESP-32S** helmet SoftAP.
 
 ---
 
@@ -8,17 +8,17 @@ This document specifies the communication and streaming contract between the sep
 
 ```text
  +-----------------------------------------------------------------+
- |                   RideShield Helmet SoftAP                     |
- |                   SSID: RideShield-XXXX-BENCH / CORE            |
- |                   Gateway IP: 192.168.4.1                       |
+ |              NodeMCU ESP-32S Helmet SoftAP Host                |
+ |              SSID: RideShield-XXXX-BENCH / CORE                 |
+ |              Gateway IP: 192.168.4.1                            |
  +-----------------------------------------------------------------+
          |                           |                      |
          v                           v                      v
-+------------------+       +-------------------+  +------------------+
-| Main Safety Core |       | Front Camera Node |  | Rear Camera Node |
-| ESP32-S3         |       | ESP32-S3 + OV2640 |  | ESP32-S3+OV2640  |
-| 192.168.4.1:81   |       | 192.168.4.2:8080  |  | 192.168.4.3:8080 |
-+------------------+       +-------------------+  +------------------+
++--------------------+     +-------------------+  +------------------+
+| Main Safety Core   |     | Front Camera Node |  | Rear Camera Node |
+| NodeMCU ESP-32S    |     | ESP32-CAM/S3-CAM  |  | ESP32-CAM/S3-CAM |
+| 192.168.4.1:81     |     | 192.168.4.2:8080  |  | 192.168.4.3:8080 |
++--------------------+     +-------------------+  +------------------+
          ^                           ^                      ^
          | WebSocket (RSW1)          | MJPEG + Metadata     | MJPEG + Metadata
          +---------------------------+----------------------+
