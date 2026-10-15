@@ -10,17 +10,23 @@ copies until the projects share a single library source.
 1. With nothing attached, power the NodeMCU-32S over USB and run
    `pio run -e nodemcu32s_bringup`. Upload with
    `pio run -e nodemcu32s_bringup -t upload`, then open the 115200-baud monitor.
-2. Disconnect power. Check the **exact** MPU6050 breakout's voltage rating. For
+2. Disconnect power. Check the **exact** MPU-9250 breakout's voltage rating. For
    a verified 3.3 V-compatible module, connect VCC to 3V3, GND to GND, SDA to
-   GPIO21 and SCL to GPIO22. Leave other modules disconnected.
+   GPIO21 and SCL to GPIO22. The default address is `0x68` (AD0 low); if your
+   breakout has AD0 high, set `board::MPU_ADDRESS` to `0x69` in
+   `include/board_config.h`. Leave other modules disconnected.
 3. Power over USB again. Type `status` and press Enter in the serial monitor.
    The boot line reports the available black-box buffer. Gently tilt and rotate
-   the MPU6050; confirm healthy readings and that disconnects become unavailable.
+   the MPU-9250; confirm `imu_id=0x71`, `IMU=1`, and changing readings. A still
+   sensor should read about 1 g of total acceleration. If it reports
+   `imu_id=0x00`, check power, wiring, and I2C address. A different identity
+   means the connected chip is not the expected MPU-9250.
 4. The controller hosts a bench Wi-Fi access point with the RSW1 WebSocket
    gateway on port 81. Its default password and 32-byte token are placeholders;
    put private replacements in ignored `include/local_config.h` before field use.
 
-The default build uses `RS_BENCH=0` and a real MPU6050; it does not inject
+The default build uses `RS_BENCH=0` and a real MPU-9250 accelerometer and
+gyroscope; its magnetometer is not used. The firmware does not inject
 synthetic impacts. It prints `SMS DISABLED` for an incident and never sends a
 live SMS. The phone app and camera boards are separate work. Do not test by
 dropping a wearable helmet or simulating a real collision.
@@ -29,7 +35,7 @@ dropping a wearable helmet or simulating a real collision.
 
 | Function | GPIO | Default |
 |---|---:|---|
-| MPU6050 SDA / SCL | 21 / 22 | Enabled |
+| MPU-9250 SDA / SCL | 21 / 22 | Enabled |
 | Cancel / SOS buttons | 32 / 33 | Pull-up inputs |
 | Buzzer / left haptic driver / LED | 25 / 26 / 27 | Disabled |
 | GNSS RX / TX (ESP32 directions) | 16 / 17 | Disabled |

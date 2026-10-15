@@ -17,18 +17,18 @@
 #include "phone.h"
 #include "blackbox.h"
 #include "sms_modem.h"
-#include "mpu6050.h"
+#include "mpu9250.h"
 using namespace rs;
 namespace {
 Ms clockMs(){return esp_timer_get_time()/1000;}
-Core core;Mpu6050 imu;BlackBox* recorder=nullptr;
+Core core;Mpu9250 imu;BlackBox* recorder=nullptr;
 uint32_t deviceId,bootId;
 struct VisionPair{Vision front,rear;bool online,clock;uint32_t rejected;Ms published;};
 struct Result{Id id;uint32_t attempt;SendResult outcome;};
 struct Journal{uint8_t bytes[CHECKPOINT_SIZE];};
 struct Capture{const MotionRecord* records;size_t count;Id id;bool truncated;};
 struct Command{enum Type{Impact,Candidate,Imu,Cancel,Sos,Head,Ack,Close,Gps}type;int value=0;double lat=0,lon=0;};
-struct Status{Ms now,remaining,lastMotionAt;State state;SendState send;Warning warning;bool imu,phone,clock,front,rear;float accelG,gyroDps;uint32_t gaps,dropped,rejected,missed;};
+struct Status{Ms now,remaining,lastMotionAt;State state;SendState send;Warning warning;bool imu,phone,clock,front,rear;uint8_t imuId;float accelG,gyroDps;uint32_t gaps,dropped,rejected,missed;};
 QueueHandle_t visionQ,smsQ,resultQ,journalQ,eventQ,captureQ,captureDoneQ,commandQ,gpsQ;
 std::atomic<bool> sdFault{false},journalFault{false},captureFault{false},networkFault{false},recoveryFault{false};
 std::atomic<uint32_t> eventDrops{0};
@@ -102,7 +102,7 @@ void controllerTask(void*){
   recorder->tick(now);Capture capture;
   if(recorder->acquire(capture.records,capture.count,capture.id,capture.truncated)&&xQueueSend(captureQ,&capture,0)!=pdTRUE){captureFault=true;recorder->release();}
   const bool fresh=now>=pair.published&&now-pair.published<=3000;
-  Status status{now,core.countdownRemaining(now),lastMotionAt,core.state(),core.sendState(),output.warning,core.imuHealthy(),fresh&&pair.online,fresh&&pair.clock,pair.front.valid&&now<pair.front.expiresMs,pair.rear.valid&&now<pair.rear.expiresMs,lastAccelG,lastGyroDps,core.sampleGaps(),core.droppedEvents()+eventDrops.load(),pair.rejected,recorder->missedCaptures()};
+  Status status{now,core.countdownRemaining(now),lastMotionAt,core.state(),core.sendState(),output.warning,core.imuHealthy(),fresh&&pair.online,fresh&&pair.clock,pair.front.valid&&now<pair.front.expiresMs,pair.rear.valid&&now<pair.rear.expiresMs,imu.identity(),lastAccelG,lastGyroDps,core.sampleGaps(),core.droppedEvents()+eventDrops.load(),pair.rejected,recorder->missedCaptures()};
   portENTER_CRITICAL(&statusMux);sharedStatus=status;portEXIT_CRITICAL(&statusMux);
   esp_task_wdt_reset();vTaskDelayUntil(&wake,pdMS_TO_TICKS(5));
  }
@@ -165,7 +165,7 @@ void modemTask(void*){
  }
 }
 Status statusSnapshot(){portENTER_CRITICAL(&statusMux);Status s=sharedStatus;portEXIT_CRITICAL(&statusMux);return s;}
-void printStatus(){auto s=statusSnapshot();Serial.printf("STATE=%s SEND=%s ALERT=%s IMU=%d sample_seen=%d a=%.2fg gyro=%.0fdps sample_age=%llums PHONE=%d CLOCK=%d FRONT=%d REAR=%d remaining=%llu gaps=%lu drops=%lu rejected=%lu missed=%lu\n",stateName(s.state),sendName(s.send),warningName(s.warning),s.imu,s.lastMotionAt!=0,s.accelG,s.gyroDps,(unsigned long long)(s.lastMotionAt&&s.now>=s.lastMotionAt?s.now-s.lastMotionAt:0),s.phone,s.clock,s.front,s.rear,(unsigned long long)s.remaining,(unsigned long)s.gaps,(unsigned long)s.dropped,(unsigned long)s.rejected,(unsigned long)s.missed);}
+void printStatus(){auto s=statusSnapshot();Serial.printf("STATE=%s SEND=%s ALERT=%s IMU=%d imu_id=0x%02x sample_seen=%d a=%.2fg gyro=%.0fdps sample_age=%llums PHONE=%d CLOCK=%d FRONT=%d REAR=%d remaining=%llu gaps=%lu drops=%lu rejected=%lu missed=%lu\n",stateName(s.state),sendName(s.send),warningName(s.warning),s.imu,unsigned(s.imuId),s.lastMotionAt!=0,s.accelG,s.gyroDps,(unsigned long long)(s.lastMotionAt&&s.now>=s.lastMotionAt?s.now-s.lastMotionAt:0),s.phone,s.clock,s.front,s.rear,(unsigned long long)s.remaining,(unsigned long)s.gaps,(unsigned long)s.dropped,(unsigned long)s.rejected,(unsigned long)s.missed);}
 void serialCommand(const char* line){
  Command c{};bool valid=true;
  if(!strcmp(line,"help")){Serial.println("status | ack | close | BENCH: impact | candidate | imu on/off | cancel down/up | sos down/up | head present/absent/unknown | gps LAT LON");return;}

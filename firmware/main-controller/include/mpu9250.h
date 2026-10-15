@@ -1,9 +1,10 @@
 #pragma once
 #include <Wire.h>
 #include "core.h"
-// 200 Hz accel+gyro FIFO; timestamps are estimated from FIFO order.
-class Mpu6050 {
- uint8_t address_=0x68,phase_=0;bool ready_=false;
+// MPU-9250: 200 Hz accel+gyro FIFO; timestamps estimated from FIFO order.
+// The AK8963 magnetometer is intentionally unused in crash bring-up.
+class Mpu9250 {
+ uint8_t address_=0x68,phase_=0,identity_=0;bool ready_=false;
  rs::Ms retryAt_=0,lastFrame_=0;
  bool write(uint8_t r,uint8_t v){Wire.beginTransmission(address_);Wire.write(r);Wire.write(v);return Wire.endTransmission()==0;}
  bool read(uint8_t r,uint8_t* b,uint8_t n){
@@ -13,11 +14,16 @@ class Mpu6050 {
  }
  int fault(rs::Ms now){ready_=false;phase_=0;retryAt_=now+100;return -1;}
 public:
+ uint8_t identity() const{return identity_;}
  void begin(int sda,int scl,uint8_t a){address_=a;Wire.begin(sda,scl,400000);Wire.setTimeOut(3);}
  int poll(rs::Ms now,rs::Motion* out,size_t capacity){
   if(!ready_){
    if(now<retryAt_)return 0;
-   if(phase_==0){uint8_t id=0;if(!read(0x75,&id,1)||id!=0x68||!write(0x6b,0x80)){retryAt_=now+2000;return -1;}phase_=1;retryAt_=now+100;return 0;}
+   if(phase_==0){identity_=0;uint8_t id=0;
+    if(!read(0x75,&id,1)){retryAt_=now+2000;return -1;}
+    identity_=id;
+    if(id!=0x71||!write(0x6b,0x80)){retryAt_=now+2000;return -1;}
+    phase_=1;retryAt_=now+100;return 0;}
    const uint8_t regs[][2]={{0x6b,1},{0x6c,0},{0x1a,3},{0x19,4},{0x1b,0x18},{0x1c,0x18},{0x23,0},{0x6a,4},{0x6a,0x40},{0x23,0x78},{0x38,0x10}};
    for(const auto& r:regs)if(!write(r[0],r[1]))return fault(now);
    uint8_t cfg[4];if(!read(0x19,cfg,4)||cfg[0]!=4||cfg[1]!=3||cfg[2]!=0x18||cfg[3]!=0x18)return fault(now);
@@ -25,7 +31,8 @@ public:
   }
   uint8_t status=0,count[2];if(!read(0x3a,&status,1)||!read(0x72,count,2))return fault(now);
   unsigned bytes=(unsigned(count[0])<<8)|count[1],frames=bytes/12;
-  if((status&0x10)||bytes>=1024||frames>capacity)return fault(now);
+  // The MPU-9250 FIFO holds 512 bytes, unlike the MPU-6050's 1024 bytes.
+  if((status&0x10)||bytes>=512||bytes%12||frames>capacity)return fault(now);
   if(!frames)return now-lastFrame_>100?fault(now):0;
   for(unsigned i=0;i<frames;++i){
    uint8_t b[12];if(!read(0x74,b,12))return fault(now);
