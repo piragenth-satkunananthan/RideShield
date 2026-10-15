@@ -6,12 +6,14 @@ RideShield is a smart motorcycle-helmet safety platform that combines an indepen
 
 > **Semi-final engineering principle:** perception features are auxiliary. Crash detection, logging and emergency communication must continue even if a camera or AI subsystem fails.
 
+The hardware controller lives in [`firmware/main-controller`](firmware/main-controller/README.md). Its full profile is `nodemcu32s_core`, with a local access-point dashboard. `dev_version/rideshield-core` remains the simulation/test project.
+
 ## Current architecture
 
-### 1. Main safety node — ESP32-S3
+### 1. Main safety node — ESP32 NodeMCU-32S
 
 Responsibilities:
-- MPU6050 motion and crash-event sensing
+- MPU-9250-labelled module (MPU-6500 ID 0x70 also supported), accelerometer/gyroscope motion sensing
 - helmet-worn verification using head-presence sensing + chin-strap state
 - crash state machine and rider cancel countdown
 - GPS location and pre-event speed
