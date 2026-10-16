@@ -1,0 +1,6 @@
+[
+    {
+        "merged": "com.rideshield.phone.app-debug-46:/xml_network_security_config.xml.flat",
+        "source": "com.rideshield.phone.app-main-48:/xml/network_security_config.xml"
+    }
+]
