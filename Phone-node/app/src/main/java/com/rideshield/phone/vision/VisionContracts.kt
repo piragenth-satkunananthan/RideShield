@@ -55,14 +55,14 @@ interface PotholeDetector {
 
 interface WetRoadClassifier {
     fun initialize(): Boolean
-    fun classify(frameBitmap: android.graphics.Bitmap): WetRoadResult
+    fun classify(frameBitmap: android.graphics.Bitmap?): WetRoadResult
     fun getModelInfo(): ModelInfo
     fun close()
 }
 
 interface RearVehicleDetectorTracker {
     fun initialize(): Boolean
-    fun detectAndTrack(frameBitmap: android.graphics.Bitmap): RearVehicleResult
+    fun detectAndTrack(frameBitmap: android.graphics.Bitmap?): RearVehicleResult
     fun getModelInfo(): ModelInfo
     fun close()
 }

@@ -13,6 +13,9 @@ color rs_warning
 color teal_200
 color teal_700
 color white
+drawable ic_launcher_foreground
+mipmap ic_launcher
+mipmap ic_launcher_round
 string app_name
 string controller_status_title
 string front_camera_title

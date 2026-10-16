@@ -19,7 +19,7 @@ class UnavailableRearVehicleDetector : RearVehicleDetectorTracker {
         return false
     }
 
-    override fun detectAndTrack(frameBitmap: android.graphics.Bitmap): RearVehicleResult {
+    override fun detectAndTrack(frameBitmap: android.graphics.Bitmap?): RearVehicleResult {
         // Never invent detections or spoof tracks
         return RearVehicleResult(
             detectedVehicles = emptyList(),

@@ -24,6 +24,7 @@ class CameraClockFilter(
     private var minObservedDelayMs: Long = Long.MAX_VALUE
     private var lastFrameCameraUs: Long = 0L
     private var lastPhoneArrivalMs: Long = 0L
+    private var hasTwoWaySync: Boolean = false
 
     /**
      * Updates clock filter with an incoming frame's arrival time and camera hardware timestamp.
@@ -36,22 +37,24 @@ class CameraClockFilter(
         val cameraMs = cameraUs / 1000L
         val instantOffset = phoneArrivalMs - cameraMs
 
-        if (sampleCount == 0) {
-            filteredOffsetMs = instantOffset
-            minObservedDelayMs = instantOffset
-            clockUncertaintyMs = 25L
-            isClockKnown = true
-        } else {
-            // Keep lower envelope of delay (minimum latency sample is closest to true transport)
-            if (instantOffset < filteredOffsetMs) {
-                filteredOffsetMs = (filteredOffsetMs * 0.7 + instantOffset * 0.3).toLong()
+        if (!hasTwoWaySync) {
+            if (sampleCount == 0) {
+                filteredOffsetMs = instantOffset
+                minObservedDelayMs = instantOffset
+                clockUncertaintyMs = 25L
+                isClockKnown = true
             } else {
-                filteredOffsetMs = (filteredOffsetMs * 0.95 + instantOffset * 0.05).toLong()
-            }
+                // Keep lower envelope of delay (minimum latency sample is closest to true transport)
+                if (instantOffset < filteredOffsetMs) {
+                    filteredOffsetMs = (filteredOffsetMs * 0.7 + instantOffset * 0.3).toLong()
+                } else {
+                    filteredOffsetMs = (filteredOffsetMs * 0.95 + instantOffset * 0.05).toLong()
+                }
 
-            // Estimate jitter/uncertainty
-            val jitter = abs(instantOffset - filteredOffsetMs)
-            clockUncertaintyMs = max(10L, min(100L, (clockUncertaintyMs * 0.8 + jitter * 0.2).toLong() + 5L))
+                // Estimate jitter/uncertainty
+                val jitter = abs(instantOffset - filteredOffsetMs)
+                clockUncertaintyMs = max(10L, min(100L, (clockUncertaintyMs * 0.8 + jitter * 0.2).toLong() + 5L))
+            }
         }
 
         sampleCount++
@@ -75,6 +78,8 @@ class CameraClockFilter(
         filteredOffsetMs = measuredOffset
         clockUncertaintyMs = ((rttMs + 1) / 2) + 2L
         isClockKnown = rttMs <= 300L
+        hasTwoWaySync = true
+        sampleCount++
     }
 
     fun reset() {
@@ -83,5 +88,6 @@ class CameraClockFilter(
         filteredOffsetMs = 0L
         clockUncertaintyMs = 50L
         isClockKnown = false
+        hasTwoWaySync = false
     }
 }

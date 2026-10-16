@@ -12,7 +12,7 @@ class UnavailableWetRoadClassifier : WetRoadClassifier {
         return false
     }
 
-    override fun classify(frameBitmap: android.graphics.Bitmap): WetRoadResult {
+    override fun classify(frameBitmap: android.graphics.Bitmap?): WetRoadResult {
         // Never invent detections: strictly report no hazard and UNAVAILABLE status
         return WetRoadResult(
             isWetRoad = false,

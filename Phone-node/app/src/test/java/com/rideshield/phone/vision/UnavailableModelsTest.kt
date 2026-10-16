@@ -19,9 +19,7 @@ class UnavailableModelsTest {
         assertEquals(ModelStatus.UNAVAILABLE, info.status)
         assertEquals("UNAVAILABLE", info.version)
 
-        // Pass a mock 10x10 bitmap
-        val dummyBitmap = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888)
-        val result = classifier.classify(dummyBitmap)
+        val result = classifier.classify(null)
 
         assertEquals("Status must be UNAVAILABLE", ModelStatus.UNAVAILABLE, result.status)
         assertFalse("Must never invent a wet road hazard", result.isWetRoad)
@@ -37,8 +35,7 @@ class UnavailableModelsTest {
         assertEquals(ModelStatus.UNAVAILABLE, info.status)
         assertEquals("UNAVAILABLE", info.version)
 
-        val dummyBitmap = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888)
-        val result = detector.detectAndTrack(dummyBitmap)
+        val result = detector.detectAndTrack(null)
 
         assertEquals("Status must be UNAVAILABLE", ModelStatus.UNAVAILABLE, result.status)
         assertTrue("Detected vehicles list must be strictly empty", result.detectedVehicles.isEmpty())
@@ -51,15 +48,13 @@ class UnavailableModelsTest {
         val wetClassifier = UnavailableWetRoadClassifier()
         val rearDetector = UnavailableRearVehicleDetector()
 
-        val bitmap = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888)
-
         // Multiple consecutive calls to ensure no sporadic or random spoofed detections occur
         for (i in 0 until 50) {
-            val wet = wetClassifier.classify(bitmap)
+            val wet = wetClassifier.classify(null)
             assertFalse(wet.isWetRoad)
             assertEquals(0, wet.confidence)
 
-            val rear = rearDetector.detectAndTrack(bitmap)
+            val rear = rearDetector.detectAndTrack(null)
             assertFalse(rear.isHazardPresent)
             assertTrue(rear.detectedVehicles.isEmpty())
         }
