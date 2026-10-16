@@ -32,7 +32,7 @@ Use this table as the repository source of truth and update it only with real ev
 | microSD logging | Firmware integration present | Read back event files from physical card and test recovery |
 | Pothole model | Android inference implementation present | Real camera timing, accuracy and latency measurements remain |
 | Wet-road / rear-vehicle models | Unavailable in the Android app | Trained models and validated outputs still needed |
-| Camera firmware | Outside this integration milestone | Streaming and end-to-end camera tests remain |
+| Front/rear camera firmware | Implemented for AI-Thinker ESP32-CAM + OV2640 | [Camera validation](../firmware/camera-node/VALIDATION.md); physical streaming, shared Wi-Fi load and perception integration remain |
 | MQ-3 | Firmware screening input present | Calibrated bench screening evidence needed; not a blood-alcohol measurement |
 
 Software builds and unit tests do not establish road readiness. The phone currently
