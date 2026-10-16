@@ -8,6 +8,10 @@ RideShield is a smart motorcycle-helmet safety platform that combines an indepen
 
 The hardware controller lives in [`firmware/main-controller`](firmware/main-controller/README.md). Its full profile is `nodemcu32s_core`, with a local access-point dashboard. `dev_version/rideshield-core` remains the simulation/test project.
 
+Both camera nodes use [`firmware/camera-node`](firmware/camera-node/README.md):
+ESP32-CAM + OV2640, with separate `front` and `rear` build profiles. Their
+firmware captures timestamped JPEG streams; perception is performed separately.
+
 The Android app lives in [`Phone-node`](Phone-node/README.md). See the [phone connection guide](Phone-node/docs/CONTROLLER_INTEGRATION.md) for live sensor telemetry and the [progress tracker](docs/SEMIFINAL_PROGRESS.md) for remaining hardware checks.
 
 ## Current architecture
@@ -23,22 +27,19 @@ Responsibilities:
 - microSD black-box logging
 - buzzer / vibration / LED warnings
 
-### 2. Front vision node — ESP32-S3 + camera
+### 2. Front camera node — ESP32-CAM + OV2640
 
-Responsibilities:
-- pothole detection
-- wet-road classification / wet-road risk estimation
-- image evidence logging
-- later: road-geometry estimation
+Firmware responsibilities: timestamped image capture and streaming. The
+downstream perception goals are pothole detection, visible wet-road risk and
+image evidence; these require separate model and integration validation.
 
 The camera **does not directly measure tyre-road friction**. The current design estimates visible wet-road risk.
 
-### 3. Rear vision node — ESP32-S3 + camera
+### 3. Rear camera node — ESP32-CAM + OV2640
 
-Responsibilities:
-- rear-vehicle detection
-- tracking / approach awareness
-- warning metadata to the main controller
+Firmware responsibilities: timestamped rear-image capture and streaming.
+Downstream perception must detect/track vehicles and produce validated warning
+observations for the main controller; the camera firmware does not do inference.
 
 Because the camera is helmet-mounted, head movement changes its geometry. This is treated as a known limitation.
 

@@ -52,6 +52,11 @@ ADXL375 is not implemented.
 - Existing authenticated RSW1 phone WebSocket: port **81**.
 - Local AP only; it does not provide Internet routing.
 
+The camera integration reserves `192.168.4.2` (front) and `192.168.4.3` (rear).
+DHCP now starts at `192.168.4.20`; reconnect/renew existing phone/laptop leases
+after uploading this version. The AP supports four connected stations. See
+[camera firmware setup](../camera-node/README.md) for both ESP32-CAM boards.
+
 The dashboard is read-only and shows readings, calibration, warnings, location,
 SD/modem state and timing. All AP clients can read it, so replace the example
 password before use outside the bench. Private settings go in ignored

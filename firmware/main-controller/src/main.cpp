@@ -313,7 +313,10 @@ void serialCommand(const char* line){
  if(!valid)Serial.println("Invalid command; type help");else if(xQueueSend(commandQ,&c,0)!=pdTRUE)Serial.println("Command queue full");
 }
 void networkTask(void*){
- WiFi.mode(WIFI_AP);WiFi.setSleep(false);char ssid[40];snprintf(ssid,sizeof ssid,"RideShield-%04lx-%s",(unsigned long)(deviceId&0xffff),RS_BENCH?"BENCH":"CORE");networkFault=!WiFi.softAPConfig(IPAddress(192,168,4,1),IPAddress(192,168,4,1),IPAddress(255,255,255,0));networkFault=networkFault||!WiFi.softAP(ssid,RS_WIFI_PASSWORD,6,false,4);
+ WiFi.mode(WIFI_AP);WiFi.setSleep(false);char ssid[40];snprintf(ssid,sizeof ssid,"RideShield-%04lx-%s",(unsigned long)(deviceId&0xffff),RS_BENCH?"BENCH":"CORE");
+ // Keep static camera addresses .2/.3 outside the phone/laptop DHCP pool.
+ networkFault=!WiFi.softAPConfig(IPAddress(192,168,4,1),IPAddress(192,168,4,1),IPAddress(255,255,255,0),IPAddress(192,168,4,20));
+ networkFault=networkFault||!WiFi.softAP(ssid,RS_WIFI_PASSWORD,6,false,4);
  Serial.printf("AP %s / WebSocket port 81 / %s\n",ssid,WiFi.softAPIP().toString().c_str());
  WebServer http(80);http.on("/",HTTP_GET,[&](){http.send_P(200,"text/html",DASHBOARD_HTML);});http.on("/api/status",HTTP_GET,[&](){http.sendHeader("Cache-Control","no-store");http.send(200,"application/json",statusJson());});http.begin();
  WebSocketsServer ws(81);PhoneGate gate;uint8_t client=255;bool authenticated=false;uint32_t session=0,syncId=0,rateCount=0;
