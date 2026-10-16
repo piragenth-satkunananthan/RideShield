@@ -17,6 +17,21 @@
 #ifndef RS_ENABLE_LTE
 #define RS_ENABLE_LTE 0
 #endif
+#ifndef RS_ENABLE_TOF
+#define RS_ENABLE_TOF 1
+#endif
+#ifndef RS_ENABLE_IR
+#define RS_ENABLE_IR 1
+#endif
+#ifndef RS_ENABLE_STRAP
+#define RS_ENABLE_STRAP 0
+#endif
+#ifndef RS_ENABLE_MQ
+#define RS_ENABLE_MQ 0
+#endif
+#ifndef RS_MQ_WARMUP_MS
+#define RS_MQ_WARMUP_MS 180000
+#endif
 #ifndef RS_ALLOW_SMS
 #define RS_ALLOW_SMS 0
 #endif
@@ -36,8 +51,8 @@
 namespace board {
 constexpr int SDA=21,SCL=22,MPU_ADDRESS=0x68,TOF_ADDRESS=0x29;
 constexpr int CANCEL=32,SOS=33;
-constexpr int IR_SIGNAL=36;
-constexpr int BUZZER=25,LEFT_MOTOR=26,RIGHT_MOTOR=-1,LED=27;
+constexpr int IR_SIGNAL=36,STRAP=39,MQ_ANALOG=35;
+constexpr int BUZZER=25,LEFT_MOTOR=26,RIGHT_MOTOR=4,LED=27;
 constexpr int GPS_RX=16,GPS_TX=17,GPS_BAUD=9600;
 constexpr int LTE_RX=34,LTE_TX=13,LTE_BAUD=115200;
 constexpr int SD_SCK=18,SD_MOSI=23,SD_MISO=19,SD_CS=14;
@@ -48,7 +63,8 @@ static_assert(sizeof(RS_WIFI_PASSWORD)>=9&&sizeof(RS_WIFI_PASSWORD)<=64,"AP pass
 static_assert(!RS_ALLOW_SMS||(RS_ENABLE_LTE&&!RS_BENCH),"SMS requires LTE and hardware profile");
 static_assert(!RS_ALLOW_SMS||(sizeof(RS_SMS_NUMBER)>=10&&sizeof(RS_SMS_NUMBER)<=17),"Configure an E.164 recipient before enabling SMS");
 constexpr bool validBoardPins(){
- constexpr int pins[]={board::SDA,board::SCL,board::CANCEL,board::SOS,board::IR_SIGNAL,
+ constexpr int pins[]={board::SDA,board::SCL,board::CANCEL,board::SOS,
+ RS_ENABLE_IR?board::IR_SIGNAL:-1,RS_ENABLE_STRAP?board::STRAP:-1,RS_ENABLE_MQ?board::MQ_ANALOG:-1,
  RS_ENABLE_OUTPUTS?board::BUZZER:-1,RS_ENABLE_OUTPUTS?board::LEFT_MOTOR:-1,
  RS_ENABLE_OUTPUTS?board::RIGHT_MOTOR:-1,RS_ENABLE_OUTPUTS?board::LED:-1,
  RS_ENABLE_GPS?board::GPS_RX:-1,RS_ENABLE_GPS?board::GPS_TX:-1,

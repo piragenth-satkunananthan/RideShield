@@ -1,70 +1,138 @@
-# RideShield main controller: NodeMCU-32S
+# RideShield main controller — NodeMCU-32S
 
-Open this directory as a PlatformIO project. It targets the **original ESP32**,
-not ESP32-S3. The portable core is copied from
-`dev_version/rideshield-core/lib/RideShieldCore/src/`; synchronize fixes to both
-copies until the projects share a single library source.
+Targets the original ESP32, not ESP32-S3. Camera firmware is separate. The
+hardware safety library remains compatible with the simulation in
+`dev_version/rideshield-core`; tests below exercise the hardware copy directly.
 
-## First hardware bring-up
+## Build and upload
 
-1. With nothing attached, power the NodeMCU-32S over USB and run
-   `pio run -e nodemcu32s_bringup`. Upload with
-   `pio run -e nodemcu32s_bringup -t upload`, then open the 115200-baud monitor.
-2. Disconnect power. Check the **exact** MPU-9250 breakout's voltage rating. For
-   a verified 3.3 V-compatible module, connect VCC to 3V3, GND to GND, SDA to
-   GPIO21 and SCL to GPIO22. The default address is `0x68` (AD0 low); if your
-   breakout has AD0 high, set `board::MPU_ADDRESS` to `0x69` in
-   `include/board_config.h`. Leave other modules disconnected.
-3. Power over USB again. Type `status` and press Enter in the serial monitor.
-   The boot line reports the available black-box buffer. Gently tilt and rotate
-   the module; confirm `IMU=1` and changing readings. A still sensor should
-   read about 1 g of total acceleration. `imu_id=0x71` identifies the expected
-   MPU-9250; `imu_id=0x70` indicates MPU-6500-class motion silicon and is
-   supported for accelerometer/gyroscope readings. This ID alone cannot prove
-   whether a magnetometer is present or working. If it reports `imu_id=0x00`,
-   check power, wiring, and I2C address.
-4. The controller hosts a bench Wi-Fi access point with the RSW1 WebSocket
-   gateway on port 81. Its default password and 32-byte token are placeholders;
-   put private replacements in ignored `include/local_config.h` before field use.
+From this directory:
 
-## Connected-sensor diagnostics
+```sh
+pio run -e nodemcu32s_core
+pio run -e nodemcu32s_core -t upload
+pio device monitor -b 115200
+```
 
-With the MPU module already working, a VL53L0X breakout may share SDA (GPIO21)
-and SCL (GPIO22), with common ground and a supply rated for that breakout.
-The KY-033 `S`/`OUT` signal may connect to GPIO36, `-` to GND and `+` to a
-verified 3.3 V supply. Inspect the labels on your own module before powering.
-After upload, wait a second and type `status` twice: `TOF_ACK=1` means a device
-acknowledged I2C address `0x29`; `IR_RAW=0/1` shows the digital pin level.
-Try changing the KY-033's view of a test surface and check the raw level.
-`TOF_ACK` does **not** verify distance measurements; `IR_RAW` does **not** verify
-eye closure. Neither diagnostic currently changes the crash state machine.
+`nodemcu32s_core` enables IMU, ToF, IR, strap, MQ input, outputs, GPS, SD and
+LTE status queries. Live SMS is disabled. `nodemcu32s_bringup` enables just
+IMU/ToF/IR plus buttons and networking. Both use real sensor readings, not
+injected impacts. `nodemcu32s_compile_all` mirrors the full dry-run profile.
 
-The default build uses `RS_BENCH=0` and reads accelerometer and gyroscope
-samples from either ID above; a magnetometer is not used. The firmware does not
-inject synthetic impacts. It prints `SMS DISABLED` for an incident and never sends a
-live SMS. The phone app and camera boards are separate work. Do not test by
-dropping a wearable helmet or simulating a real collision.
+## Wiring
 
-## Provisional pin map
+All modules need common ground. GPIO names below are ESP32 directions.
 
-| Function | GPIO | Default |
-|---|---:|---|
-| MPU-9250 SDA / SCL | 21 / 22 | Enabled |
-| VL53L0X SDA / SCL | 21 / 22 | Address probe only |
-| KY-033 signal | 36 | Raw digital input only |
-| Cancel / SOS buttons | 32 / 33 | Pull-up inputs |
-| Buzzer / left haptic driver / LED | 25 / 26 / 27 | Disabled |
-| GNSS RX / TX (ESP32 directions) | 16 / 17 | Disabled |
-| LTE RX / TX (ESP32 directions) | 34 / 13 | Disabled |
-| SD SCK / MOSI / MISO / CS | 18 / 23 / 19 / 14 | Disabled |
+| Module / function | GPIO |
+|---|---|
+| IMU SDA / SCL | 21 / 22, address 0x68 (0x69 configurable) |
+| VL53L0X SDA / SCL | 21 / 22, address 0x29 |
+| KY-033 OUT | 36 |
+| Strap reed switch | 39 to GND; external 10 kΩ pull-up to 3V3 |
+| MQ-3 analog | 35 through a divider keeping ADC voltage below 3.3 V |
+| Cancel / SOS | 32 / 33, each button to GND |
+| Buzzer driver | 25 |
+| Left / right vibration drivers | 26 / 4 |
+| LED through resistor | 27 |
+| GPS module TX / RX | 16 / 17 (9600 baud) |
+| LTE module TX / RX | 34 / 13 (115200 baud) |
+| SD SCK / MOSI / MISO / CS | 18 / 23 / 19 / 14 |
 
-The layout in `include/board_config.h` is provisional. GPIO34 is input-only,
-so it is only assigned UART RX. Check the exact board pinout, every breakout's
-logic levels and the supply current before enabling modules. Motors, the modem
-and the MQ heater need suitable power and drivers; they cannot draw power from
-a GPIO. The `nodemcu32s_compile_all` profile verifies source compilation with
-all optional interfaces and SMS disabled; it is not a wiring plan for flashing.
+Use each breakout's rated supply and suitable logic-level conversion. GPIO36
+and 39 have no internal pull-up. Motors and buzzer need appropriate drivers;
+the modem and MQ heater need suitable power, not GPIO power. LTE power-key
+control is not assigned: the board must already power up its modem. An optional
+ADXL375 is not implemented.
 
-The usual NodeMCU-32S has no PSRAM. The smaller internal-RAM capture buffer
-targets roughly one second before and six seconds after an event, subject to
-actual available heap. The serial boot line reports allocation or failure.
+## Access point and phone
+
+- Wi-Fi: `RideShield-XXXX-CORE` (XXXX is derived from the device ID).
+- Default password: `rideshield-bench-only`.
+- Browser dashboard: **http://192.168.4.1/**; live JSON: `/api/status`.
+- Existing authenticated RSW1 phone WebSocket: port **81**.
+- Local AP only; it does not provide Internet routing.
+
+The dashboard is read-only and shows readings, calibration, warnings, location,
+SD/modem state and timing. All AP clients can read it, so replace the example
+password before use outside the bench. Private settings go in ignored
+`include/local_config.h`:
+
+```cpp
+#pragma once
+#define RS_WIFI_PASSWORD "your-private-wifi-password"
+#define RS_PHONE_TOKEN "0123456789abcdef0123456789abcdef"
+// #define RS_SMS_NUMBER "+<country code and subscriber number>"
+```
+
+The token must be exactly 32 ASCII characters and match the phone app.
+Configure a real recipient, then explicitly build `nodemcu32s_live_sms` to
+permit SMS. Use an agreed test recipient; messages remain labelled TEST.
+`SUBMITTED` means the modem accepted submission, not confirmed delivery.
+
+## Calibration through USB Serial
+
+Type `help` for commands. `status` prints the current readings.
+
+1. Position the ToF inside the helmet, aimed toward where the head will be.
+   Hold a steady worn position for at least a second; send `headcal worn`.
+   Remove the helmet, wait for stable valid readings, send `headcal empty`.
+   The empty reading must be at least 30 mm farther away. Both measurements
+   must be valid 10–2000 mm; no-return/out-of-range is **unknown**, not absent.
+   If the empty helmet gives no valid return, change mounting or leave head
+   detection uncalibrated. Uncalibrated/unknown presence does not suppress an
+   incident. Calibration requires five readings with at most 20 mm spread.
+2. KY-033 is a reflective line sensor. First verify two distinct levels using
+   test surfaces, then capture the intended states with `ircal open` and
+   `ircal closed`. It reports a prolonged calibrated signal after two seconds
+   while a head is present. This is not validated eye-closure detection; do
+   not position an unassessed emitter near an eye to perform this calibration.
+3. MQ screening is disabled until `mqlimit N`, where N is 100–3000 mV at the
+   ESP32 ADC after the divider. Establish a threshold from bench measurements;
+   no universal threshold or blood-alcohol conversion is provided. The runtime
+   warm-up gate is three minutes; follow the module manufacturer's initial
+   conditioning requirements separately. A high requires two continuous
+   seconds above threshold, with 50 mV release hysteresis.
+4. Wait for `Calibration saved`. Values persist across restart with CRC
+   validation. `calclear` resets all calibrations. A save failure is reported;
+   repeat the command after correcting the storage problem.
+
+The strap signal is debounced. An open strap warns but does not disable crash
+or IR monitoring. Inputs ready is diagnostic only, not permission to ride.
+
+## Controller behavior
+
+The existing crash core retains its candidate/verification/countdown/incident
+states, 15-second cancel window, deliberate one-second Cancel hold and
+three-second SOS hold. SOS bypasses wear checks. Missing IMU, storage, network
+or persistence does not cancel an existing incident. Emergency and countdown
+outputs take priority over system and rider warnings.
+
+The MPU driver accepts WHO_AM_I 0x71 and 0x70 (MPU-6500-class accel/gyro in the
+user's module). It reads accelerometer and gyro at 200 Hz; no magnetometer is
+used. ToF runs continuous ranging, polled without waiting for a measurement;
+the controller task owns I2C. Check `loop_max_us` and `gaps` on real hardware
+under simultaneous Wi-Fi/SD/modem load before relying on timing.
+
+Separate tasks handle networking/GPS, modem UART, NVS and SD. The SD stores
+`events-BOOT.rsl`, `motion-INCIDENT.rsl`, and one-Hz `sensors-BOOT.csv` files.
+After an SD failure it attempts remount every five seconds; missed records are
+not recovered. With no PSRAM, the motion buffer targets about one second before
+and six seconds after the trigger; allocation/truncation is reported. The
+experimental event index is a bounded motion-signal summary, not injury severity.
+
+`ack` acknowledges the local incident; it does not stop SMS retries. `close`
+only closes after submission or disabled SMS. Never generate real impacts to
+test this prototype; use the existing simulation and controlled button tests.
+
+## Verification
+
+From the repository root:
+
+```sh
+python firmware/main-controller/tools/test_native.py
+```
+
+This runs the 51 portable-core tests against the hardware library, plus rider
+calibration/freshness/debounce/timing/priority checks, with undefined-behavior
+sanitization. Compilation and native tests cannot verify wiring, output drivers,
+actual sampling latency, modem registration/delivery, or wearable performance.
