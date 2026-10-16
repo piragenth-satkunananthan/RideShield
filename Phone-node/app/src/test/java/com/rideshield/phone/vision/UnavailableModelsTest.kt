@@ -3,6 +3,7 @@ package com.rideshield.phone.vision
 import android.graphics.Bitmap
 import org.junit.Assert.*
 import org.junit.Test
+import org.mockito.Mockito.mock
 
 /**
  * Unit tests verifying that unavailable models strictly report UNAVAILABLE
@@ -20,7 +21,7 @@ class UnavailableModelsTest {
         assertEquals("UNAVAILABLE", info.version)
 
         // Pass a mock 10x10 bitmap
-        val dummyBitmap = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888)
+        val dummyBitmap = mock(Bitmap::class.java)
         val result = classifier.classify(dummyBitmap)
 
         assertEquals("Status must be UNAVAILABLE", ModelStatus.UNAVAILABLE, result.status)
@@ -37,7 +38,7 @@ class UnavailableModelsTest {
         assertEquals(ModelStatus.UNAVAILABLE, info.status)
         assertEquals("UNAVAILABLE", info.version)
 
-        val dummyBitmap = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888)
+        val dummyBitmap = mock(Bitmap::class.java)
         val result = detector.detectAndTrack(dummyBitmap)
 
         assertEquals("Status must be UNAVAILABLE", ModelStatus.UNAVAILABLE, result.status)
@@ -51,7 +52,7 @@ class UnavailableModelsTest {
         val wetClassifier = UnavailableWetRoadClassifier()
         val rearDetector = UnavailableRearVehicleDetector()
 
-        val bitmap = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888)
+        val bitmap = mock(Bitmap::class.java)
 
         // Multiple consecutive calls to ensure no sporadic or random spoofed detections occur
         for (i in 0 until 50) {
