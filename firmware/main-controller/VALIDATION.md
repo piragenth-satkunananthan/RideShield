@@ -53,3 +53,17 @@ SMS was sent during these checks.
    not proof of delivery. Avoid real impact testing of a wearable helmet.
 
 See [README.md](README.md) for build, wiring, calibration and AP instructions.
+
+## Camera milestone re-check — 2026-10-17
+
+The AP DHCP start moved to `192.168.4.20` so the fixed camera addresses
+`.2` / `.3` stay reserved. The changed profiles were rebuilt:
+
+| Profile | Result |
+|---|---|
+| `nodemcu32s_core` | PASS; static RAM 50,316; flash 956,841 / 1,310,720 bytes (73.0%) |
+| `nodemcu32s_bringup` | PASS; static RAM 49,544; flash 892,653 / 1,310,720 bytes (68.1%) |
+| `nodemcu32s_compile_all` | PASS; static RAM 50,316; flash 956,841 |
+| Portable core native suite | 51 / 51 PASS; rider-input and configuration guards PASS |
+
+No device was flashed. The physical-verification steps above still apply.

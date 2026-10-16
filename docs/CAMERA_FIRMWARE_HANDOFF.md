@@ -59,19 +59,34 @@ by the socket, not consumer receipt. End-to-end freshness remains unverified.
 
 ## Verification actually completed
 
-- Front default-config build passed: flash 453,649 bytes; static RAM 29,788.
-- Default SSID is EMPTY. Compiler may remove unreachable networking paths;
-  explicitly build both roles with a nonempty ignored test configuration next.
-- Native stream helper suite passed.
-- Five Python probe parser tests passed.
+- Front AND rear both built with a nonempty test SSID in an ignored
+  `local_config.h`, so Wi-Fi/lwIP/streaming paths are linked (not
+  dead-code-eliminated): front flash 864,585 / static RAM 49,396; rear flash
+  864,569 / static RAM 49,396. This supersedes the earlier front 453,649 /
+  29,788 figure, which was an EMPTY-SSID build artifact.
+- Camera sources compile clean under `-Wall -Wextra -Wshadow -Wconversion`
+  (no warning from `src/` or `include/`; only framework `WString.h` noise).
+- Changed controller profiles rebuilt: `nodemcu32s_core` 956,841 flash /
+  50,316 RAM; `nodemcu32s_bringup` 892,653 / 49,544; `nodemcu32s_compile_all`
+  956,841 / 50,316 — all PASS.
+- Native stream helper suite passed; five Python probe parser tests passed.
 - Main-controller native suite: 51/51 core tests, rider-input suite and board
   configuration guards passed.
-- Rear build and changed controller builds NOT yet performed.
+- Framework behavior confirmed against the shipped camera library: frame
+  `timestamp` is since-boot `esp_timer_get_time()` microseconds; `WiFiClient`
+  shares a refcounted socket; `WiFiServer::available()` is nonblocking;
+  `softAPConfig` 4th argument sets the `.20` DHCP start.
+- Code review found no socket-ownership, concurrency, reconnect, buffer-lifetime
+  or error-recovery defects requiring a fix.
 - No physical camera/board was flashed or tested here.
 
 Do not claim the camera subsystem, real-time behavior or road safety is verified.
 
 ## Next actions
+
+Steps 1–5 below are DONE as of the 2026-10-17 re-check (see "Verification
+actually completed"). Remaining work is the physical steps 6–7; no board has
+been flashed or measured yet.
 
 1. Fetch `camera-nodes` and `main`, inspect status and preserve changes. Resume
    the checkpoint rather than rewriting working code.
