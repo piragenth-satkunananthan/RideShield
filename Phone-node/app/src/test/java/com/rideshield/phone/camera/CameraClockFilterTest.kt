@@ -53,5 +53,14 @@ class CameraClockFilterTest {
 
         // Mapped capture should be 3000 + (-1480) = 1520ms
         assertEquals(1520L, mappedMs)
+
+        // Later transport delay must not shift the same measured offset.
+        val (delayedMs, uncertaintyMs) = filter.processFrameTimestamp(4000000L, 2700L)
+        assertEquals(2520L, delayedMs)
+        assertTrue(uncertaintyMs >= 22L)
+
+        filter.reset()
+        assertFalse(filter.isClockKnown)
+        assertEquals(5000L, filter.processFrameTimestamp(1000000L, 5000L).first)
     }
 }

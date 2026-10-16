@@ -68,6 +68,19 @@ expiry/reconnect, concurrent packet ordering, invalid connection settings,
 expired clocks, telemetry parsing and stale-reading removal. Existing packet
 encoding tests retain the RSW1 golden vector.
 
+Verified on 2026-10-16 with JDK 17, Gradle 8.7 and Android SDK 34:
+
+- `testDebugUnitTest assembleDebug` completed successfully.
+- 32 JVM unit tests passed; zero failures, errors or skipped tests.
+- The generated debug APK passed `apksigner verify`.
+- Fixed the phone's camera clock filter so frame arrival delay cannot overwrite
+  an explicit two-way clock estimate. Its regression test also checks reset.
+- Tests use Mockito's subclass mock maker with Android's mockable API jar;
+  dynamic JVM agent attachment is not required.
+
+These checks cover software behavior and packaging, not Android device UI,
+physical Wi-Fi routing or actual sensor/model accuracy.
+
 ## Physical acceptance still required
 
 Keep the app foregrounded for this milestone. Test with mobile data enabled,

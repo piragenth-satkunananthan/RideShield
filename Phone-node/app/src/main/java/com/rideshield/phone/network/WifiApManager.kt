@@ -19,14 +19,18 @@ class WifiApManager(context: Context) {
         val listener = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) = synchronized(this@WifiApManager) {
                 if (attempt != generation) return@synchronized
-                if (cm.bindProcessToNetwork(network)) { bound = network; onConnected() } else onError("Could not route to Wi-Fi")
+                if (cm.bindProcessToNetwork(network)) { bound = network; onConnected() }
+                else { unbind(); onError("Could not route to Wi-Fi") }
             }
             override fun onLost(network: Network) = synchronized(this@WifiApManager) {
                 if (attempt != generation || bound != network) return@synchronized
                 bound = null; cm.bindProcessToNetwork(null); onLost()
             }
             override fun onUnavailable() = synchronized(this@WifiApManager) {
-                if (attempt == generation) onError("Join RideShield Wi-Fi in Android settings, then connect again")
+                if (attempt == generation) {
+                    unbind()
+                    onError("Join RideShield Wi-Fi in Android settings, then connect again")
+                }
             }
         }
         callback = listener

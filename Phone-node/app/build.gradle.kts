@@ -78,7 +78,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons)
 
-    // OkHttp for WebSocket connection to ESP32-S3 and HTTP streaming
+    // OkHttp for WebSocket connection to NodeMCU-32S and HTTP streaming
     implementation(libs.okhttp)
 
     // Coroutines

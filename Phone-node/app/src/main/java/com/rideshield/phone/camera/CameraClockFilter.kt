@@ -24,6 +24,8 @@ class CameraClockFilter(
     private var minObservedDelayMs: Long = Long.MAX_VALUE
     private var lastFrameCameraUs: Long = 0L
     private var lastPhoneArrivalMs: Long = 0L
+    private var explicitSyncAtMs: Long? = null
+    private var explicitSyncUncertaintyMs: Long = 0L
 
     /**
      * Updates clock filter with an incoming frame's arrival time and camera hardware timestamp.
@@ -36,7 +38,12 @@ class CameraClockFilter(
         val cameraMs = cameraUs / 1000L
         val instantOffset = phoneArrivalMs - cameraMs
 
-        if (sampleCount == 0) {
+        val syncedAt = explicitSyncAtMs
+        if (syncedAt != null) {
+            // Arrival includes transport delay; it must not replace a measured offset.
+            val elapsed = (phoneArrivalMs - syncedAt).coerceAtLeast(0L)
+            clockUncertaintyMs = explicitSyncUncertaintyMs + (elapsed + 4999L) / 5000L
+        } else if (sampleCount == 0) {
             filteredOffsetMs = instantOffset
             minObservedDelayMs = instantOffset
             clockUncertaintyMs = 25L
@@ -74,14 +81,19 @@ class CameraClockFilter(
 
         filteredOffsetMs = measuredOffset
         clockUncertaintyMs = ((rttMs + 1) / 2) + 2L
+        explicitSyncAtMs = t1PhoneMs
+        explicitSyncUncertaintyMs = clockUncertaintyMs
         isClockKnown = rttMs <= 300L
     }
 
+    @Synchronized
     fun reset() {
         sampleCount = 0
         minObservedDelayMs = Long.MAX_VALUE
         filteredOffsetMs = 0L
         clockUncertaintyMs = 50L
         isClockKnown = false
+        explicitSyncAtMs = null
+        explicitSyncUncertaintyMs = 0L
     }
 }
