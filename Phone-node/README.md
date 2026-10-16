@@ -1,7 +1,9 @@
 # RideShield Phone Node: Native Android HUD & Perception Application
 
 Native Kotlin Android application for the **RideShield Smart Helmet**.
-This application functions as the rider's Heads-Up Display (HUD) and perception producer, connecting directly to the helmet's main ESP32-S3 microcontroller over Wi-Fi and WebSockets.
+This application functions as the rider's Heads-Up Display (HUD) and perception producer, connecting directly to the helmet's main ESP32 NodeMCU-32S microcontroller over Wi-Fi and WebSockets.
+
+See [Controller integration](docs/CONTROLLER_INTEGRATION.md) for the current hardware connection flow, live sensor telemetry, connection tests and remaining device checks. Hardware mode is the default; camera previews are explicit and synthetic frames stay on the phone.
 
 ---
 
@@ -28,7 +30,7 @@ This application functions as the rider's Heads-Up Display (HUD) and perception 
    - Real-time quality diagnostics: stream age (ms), sequence gaps, frame drops, decode latency, and sharpness.
 
 5. **Safety Boundary Isolation**:
-   - Crash detection, SOS emergency SMS dispatch, blackbox recording, and buzzer/vibration alerts remain autonomous on the ESP32-S3 microcontroller.
+   - Crash detection, SOS emergency SMS dispatch, blackbox recording, and buzzer/vibration alerts remain autonomous on the ESP32 NodeMCU-32S microcontroller.
    - The phone application operates strictly as an external perception sensor and telemetry monitor.
 
 6. **RSW2 Versioned Protocol Proposal**:

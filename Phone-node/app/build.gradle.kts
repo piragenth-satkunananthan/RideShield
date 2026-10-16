@@ -84,7 +84,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons)
 
-    // OkHttp for WebSocket connection to ESP32-S3 and HTTP streaming
+    // OkHttp for WebSocket connection to NodeMCU-32S and HTTP streaming
     implementation(libs.okhttp)
 
     // Coroutines
@@ -98,6 +98,7 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation("org.json:json:20231013")
+    testImplementation("org.mockito:mockito-core:5.11.0")
 
     // Android Testing
     androidTestImplementation(libs.androidx.junit)

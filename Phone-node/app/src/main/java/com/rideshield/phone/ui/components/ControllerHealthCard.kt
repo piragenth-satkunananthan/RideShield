@@ -64,10 +64,10 @@ fun ControllerHealthCard(
         ) {
             Column {
                 Text(text = "CONTROLLER STATE", style = Typography.labelSmall)
-                val stateColor = when (telemetry.controllerState) {
-                    "Monitor" -> StatusGreen
-                    "Countdown", "Incident" -> StatusRed
-                    "Verify", "Degraded" -> StatusOrange
+                val stateColor = when (telemetry.controllerState.uppercase()) {
+                    "MONITOR" -> StatusGreen
+                    "COUNTDOWN", "INCIDENT" -> StatusRed
+                    "VERIFY", "DEGRADED" -> StatusOrange
                     else -> TextPrimary
                 }
                 Text(text = telemetry.controllerState, color = stateColor, style = Typography.titleMedium)
@@ -75,7 +75,7 @@ fun ControllerHealthCard(
 
             Column(horizontalAlignment = Alignment.End) {
                 Text(text = "ACTIVE WARNING", style = Typography.labelSmall)
-                val warnColor = if (telemetry.controllerWarning == "None") StatusGreen else StatusOrange
+                val warnColor = if (telemetry.controllerWarning.uppercase() == "NONE") StatusGreen else StatusOrange
                 Text(text = telemetry.controllerWarning, color = warnColor, style = Typography.titleMedium)
             }
         }

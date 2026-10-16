@@ -24,7 +24,9 @@ class CameraClockFilter(
     private var minObservedDelayMs: Long = Long.MAX_VALUE
     private var lastFrameCameraUs: Long = 0L
     private var lastPhoneArrivalMs: Long = 0L
-    private var hasTwoWaySync: Boolean = false
+
+    private var explicitSyncAtMs: Long? = null
+    private var explicitSyncUncertaintyMs: Long = 0L
 
     /**
      * Updates clock filter with an incoming frame's arrival time and camera hardware timestamp.
@@ -37,12 +39,21 @@ class CameraClockFilter(
         val cameraMs = cameraUs / 1000L
         val instantOffset = phoneArrivalMs - cameraMs
 
-        if (!hasTwoWaySync) {
-            if (sampleCount == 0) {
-                filteredOffsetMs = instantOffset
-                minObservedDelayMs = instantOffset
-                clockUncertaintyMs = 25L
-                isClockKnown = true
+
+        val syncedAt = explicitSyncAtMs
+        if (syncedAt != null) {
+            // Arrival includes transport delay; it must not replace a measured offset.
+            val elapsed = (phoneArrivalMs - syncedAt).coerceAtLeast(0L)
+            clockUncertaintyMs = explicitSyncUncertaintyMs + (elapsed + 4999L) / 5000L
+        } else if (sampleCount == 0) {
+            filteredOffsetMs = instantOffset
+            minObservedDelayMs = instantOffset
+            clockUncertaintyMs = 25L
+            isClockKnown = true
+        } else {
+            // Keep lower envelope of delay (minimum latency sample is closest to true transport)
+            if (instantOffset < filteredOffsetMs) {
+                filteredOffsetMs = (filteredOffsetMs * 0.7 + instantOffset * 0.3).toLong()
             } else {
                 // Keep lower envelope of delay (minimum latency sample is closest to true transport)
                 if (instantOffset < filteredOffsetMs) {
@@ -77,17 +88,22 @@ class CameraClockFilter(
 
         filteredOffsetMs = measuredOffset
         clockUncertaintyMs = ((rttMs + 1) / 2) + 2L
+        explicitSyncAtMs = t1PhoneMs
+        explicitSyncUncertaintyMs = clockUncertaintyMs
         isClockKnown = rttMs <= 300L
         hasTwoWaySync = true
         sampleCount++
     }
 
+    @Synchronized
     fun reset() {
         sampleCount = 0
         minObservedDelayMs = Long.MAX_VALUE
         filteredOffsetMs = 0L
         clockUncertaintyMs = 50L
         isClockKnown = false
-        hasTwoWaySync = false
+
+        explicitSyncAtMs = null
+        explicitSyncUncertaintyMs = 0L
     }
 }

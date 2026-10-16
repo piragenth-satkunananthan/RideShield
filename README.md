@@ -8,6 +8,8 @@ RideShield is a smart motorcycle-helmet safety platform that combines an indepen
 
 The hardware controller lives in [`firmware/main-controller`](firmware/main-controller/README.md). Its full profile is `nodemcu32s_core`, with a local access-point dashboard. `dev_version/rideshield-core` remains the simulation/test project.
 
+The Android app lives in [`Phone-node`](Phone-node/README.md). See the [phone connection guide](Phone-node/docs/CONTROLLER_INTEGRATION.md) for live sensor telemetry and the [progress tracker](docs/SEMIFINAL_PROGRESS.md) for remaining hardware checks.
+
 ## Current architecture
 
 ### 1. Main safety node — ESP32 NodeMCU-32S
@@ -43,7 +45,7 @@ Because the camera is helmet-mounted, head movement changes its geometry. This i
 ## Safety-core flow
 
 ```text
-MPU6050 + GPS + helmet-worn state
+IMU + GPS + helmet-worn state
               |
               v
        Crash state machine
@@ -73,7 +75,7 @@ RideShield reports a **Crash Event Severity Index** and classifies events as:
 - Moderate-energy crash event
 - High-energy crash event
 
-This is **not a medical injury assessment**. The MPU6050 accelerometer is limited to ±16 g, so the system does not claim true high-g impact magnitude after saturation.
+This is **not a medical injury assessment**. The accelerometer's configured range is ±16 g, so the system does not claim true high-g impact magnitude after saturation.
 
 ## Semi-final scope
 

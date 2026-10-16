@@ -135,7 +135,7 @@ class VisionPipelineManager(
                     0
                 }
 
-                webSocketClient.sendFrontObservation(
+                if (!frame.synthetic && !frontCameraClient.isMockMode && potholeResult.status == ModelStatus.LOADED) webSocketClient.sendFrontObservation(
                     capturePhoneMs = frame.mappedPhoneCaptureMs,
                     cameraUncertaintyMs = frame.clockUncertaintyMs,
                     pothole = potholeResult.isHazardPresent,
@@ -179,7 +179,7 @@ class VisionPipelineManager(
                 )
 
                 // Only dispatch rear observation if model is active and valid (or clear frames)
-                if (rearResult.status != ModelStatus.UNAVAILABLE) {
+                if (!frame.synthetic && !rearCameraClient.isMockMode && rearResult.status == ModelStatus.LOADED) {
                     webSocketClient.sendRearObservation(
                         capturePhoneMs = frame.mappedPhoneCaptureMs,
                         cameraUncertaintyMs = frame.clockUncertaintyMs,

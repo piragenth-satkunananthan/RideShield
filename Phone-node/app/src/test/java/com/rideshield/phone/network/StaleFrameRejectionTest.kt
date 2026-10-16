@@ -92,4 +92,13 @@ class StaleFrameRejectionTest {
         )
         assertFalse("Cannot send observation when unauthenticated", sentUnauth)
     }
+    @Test fun expiredUnsyncedAndNegativeUncertaintyFramesAreRejected() {
+        var now = 1000L
+        val clock = RswClockSynchronizer { now }
+        assertFalse(clock.isFrameFresh(now, 0))
+        clock.onSyncRequest(1000, 1)
+        assertFalse(clock.isFrameFresh(now, -1))
+        now += 31000
+        assertFalse(clock.isFrameFresh(now, 0))
+    }
 }
