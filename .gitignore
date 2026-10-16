@@ -1,0 +1,72 @@
+# ============================================================
+# RideShield — root .gitignore
+# Covers: Phone-node (Android), firmware/ + dev_version/ +
+#         RideShield_simulation (PlatformIO), Python/CV tooling
+# ============================================================
+
+# ---------- OS generated ----------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+*~
+
+# ---------- Editors / IDEs ----------
+*.swp
+*.swo
+.idea/
+*.iml
+
+# ---------- Android / Gradle (Phone-node/) ----------
+.gradle/
+build/
+.kotlin/
+local.properties
+output.json
+*.apk
+*.aab
+*.ap_
+*.dex
+*.hprof
+captures/
+.externalNativeBuild/
+.cxx/
+
+# ---------- PlatformIO (firmware/, dev_version/, RideShield_simulation/) ----------
+.pio/
+.cache/
+compile_commands.json
+**/.vscode/browse.vc.db*
+**/.vscode/c_cpp_properties.json
+**/.vscode/launch.json
+**/.vscode/ipch
+
+# ---------- Python (CV / scripts) ----------
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+runs/
+
+# ---------- Logs & temp files ----------
+*.log
+*.tmp
+*.temp
+*.bak
+
+# ---------- Secrets / local-only config ----------
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.rideshield.phone.network.DisconnectReconnectTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-16T06:02:39" hostname="archlinux" time="0.199">
-  <properties/>
-  <testcase name="testParseRejectionCodes" classname="com.rideshield.phone.network.DisconnectReconnectTest" time="0.013"/>
-  <testcase name="testParseWelcomeAndHandshakeMessages" classname="com.rideshield.phone.network.DisconnectReconnectTest" time="0.001"/>
-  <testcase name="testClientStateResetOnDisconnect" classname="com.rideshield.phone.network.DisconnectReconnectTest" time="0.185"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
