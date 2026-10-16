@@ -90,6 +90,7 @@ class MockCameraSource(
         bitmap.recycle()
 
         return CameraFrame(
+            synthetic = true,
             cameraNode = nodeName,
             frameIndex = frameIdx,
             cameraCaptureTimestampUs = simCameraUs,

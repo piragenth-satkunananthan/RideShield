@@ -9,7 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.rideshield.phone.protocol.RswConstants
+import com.rideshield.phone.network.RswWebSocketClient
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import com.rideshield.phone.ui.theme.*
 
 @Composable
@@ -42,7 +43,7 @@ fun ConnectionSettingsDialog(
                 OutlinedTextField(
                     value = wsUrl,
                     onValueChange = { wsUrl = it },
-                    label = { Text("ESP32-S3 WebSocket URL") },
+                    label = { Text("NodeMCU-32S WebSocket URL") },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -57,7 +58,8 @@ fun ConnectionSettingsDialog(
                     value = token,
                     onValueChange = { if (it.length <= 32) token = it },
                     label = { Text("Pre-Shared Token (32 ASCII bytes)") },
-                    supportingText = { Text("${token.length}/32 bytes", style = Typography.labelSmall) },
+                    supportingText = { Text("${token.length}/32 ASCII characters", style = Typography.labelSmall) },
+                    visualTransformation = PasswordVisualTransformation(),
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -104,7 +106,7 @@ fun ConnectionSettingsDialog(
                     Column {
                         Text(text = "Bench Simulator Mode", style = Typography.titleMedium)
                         Text(
-                            text = "Synthesizes camera feed & hazards offline",
+                            text = "Local previews only; never sent to helmet",
                             style = Typography.bodySmall,
                             color = TextMuted
                         )
@@ -126,9 +128,11 @@ fun ConnectionSettingsDialog(
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Button(
+                        enabled = RswWebSocketClient.validSettings(wsUrl, token) &&
+                            (frontUrl.startsWith("http://") || frontUrl.startsWith("https://")) &&
+                            (rearUrl.startsWith("http://") || rearUrl.startsWith("https://")),
                         onClick = {
-                            val paddedToken = token.padEnd(32, ' ').take(32)
-                            onSave(wsUrl, paddedToken, frontUrl, rearUrl, mock)
+                            onSave(wsUrl, token, frontUrl, rearUrl, mock)
                             onDismiss()
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = AccentCyan)

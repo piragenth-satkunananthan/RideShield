@@ -88,7 +88,7 @@ class OnnxPotholeDetector(
     private fun loadModelBytes(): ByteArray? {
         if (context != null) {
             try {
-                context.assets.open(modelAssetPath).use { it.readBytes() }
+                return context.assets.open(modelAssetPath).use { it.readBytes() }
             } catch (e: Exception) {
                 // Check app files dir
                 val localFile = File(context.filesDir, modelAssetPath)

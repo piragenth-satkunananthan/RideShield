@@ -24,12 +24,17 @@ import com.rideshield.phone.ui.components.CameraStreamCard
 import com.rideshield.phone.ui.components.ConnectionSettingsDialog
 import com.rideshield.phone.ui.components.ControllerHealthCard
 import com.rideshield.phone.ui.components.ModelStatusCard
+import com.rideshield.phone.ui.components.SensorTelemetryCard
 import com.rideshield.phone.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(viewModel: MainViewModel) {
     val telemetry by viewModel.clientTelemetry.collectAsState()
+    val sensors by viewModel.sensorTelemetry.collectAsState()
+    val connectionRequested by viewModel.connectionRequested.collectAsState()
+    val connectionMessage by viewModel.connectionMessage.collectAsState()
+    val cameraEnabled by viewModel.cameraEnabled.collectAsState()
     val frontStats by viewModel.frontCameraStats.collectAsState()
     val rearStats by viewModel.rearCameraStats.collectAsState()
     val frontVision by viewModel.frontVision.collectAsState()
@@ -59,7 +64,7 @@ fun DashboardScreen(viewModel: MainViewModel) {
                 },
                 actions = {
                     // Connect / Disconnect button
-                    val isConnected = telemetry.status == ConnectionStatus.CONNECTED_ACTIVE
+                    val isConnected = connectionRequested
                     IconButton(onClick = {
                         if (isConnected) {
                             viewModel.disconnectHelmetController()
@@ -119,7 +124,13 @@ fun DashboardScreen(viewModel: MainViewModel) {
             Spacer(modifier = Modifier.height(12.dp))
 
             // ESP32-S3 Safety Core Status Card
+            Text(connectionMessage, style = Typography.bodySmall, color = TextSecondary)
+            Text(telemetry.statusMessage, style = Typography.bodySmall, color = TextMuted)
             ControllerHealthCard(telemetry = telemetry)
+            Spacer(modifier = Modifier.height(12.dp))
+            SensorTelemetryCard(sensors)
+            TextButton(onClick = viewModel::toggleCameras) { Text(if (cameraEnabled) "Stop camera previews" else "Start camera previews") }
+            if (isMock) Text("Simulation stays on this phone; synthetic observations are not sent.", color = StatusOrange)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -133,7 +144,7 @@ fun DashboardScreen(viewModel: MainViewModel) {
                 bitmap = frontVision.latestBitmap,
                 detections = frontVision.potholes,
                 stats = frontStats,
-                isAvailable = true
+                isAvailable = cameraEnabled && frontStats.fps > 0
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -144,7 +155,7 @@ fun DashboardScreen(viewModel: MainViewModel) {
                 bitmap = rearVision.latestBitmap,
                 detections = rearVision.vehicles,
                 stats = rearStats,
-                isAvailable = isMock || rearStats.fps > 0,
+                isAvailable = cameraEnabled && rearStats.fps > 0,
                 unavailableReason = "REAR NODE UNAVAILABLE"
             )
 

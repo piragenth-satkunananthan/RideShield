@@ -84,6 +84,7 @@ class RswClockSynchronizer(
      * Returns true if fresh, false if stale.
      */
     fun isFrameFresh(capturePhoneMs: Long, cameraUncertaintyMs: Long): Boolean {
+        if (!isClockValid() || cameraUncertaintyMs !in 0..500 || capturePhoneMs < 0) return false
         val nowPhoneMs = clockProvider()
         val ageOnPhone = nowPhoneMs - capturePhoneMs
         if (ageOnPhone < 0) return false // from future

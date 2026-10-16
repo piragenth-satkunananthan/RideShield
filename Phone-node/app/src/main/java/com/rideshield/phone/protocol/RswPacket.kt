@@ -64,6 +64,7 @@ data class RswPacket(
          * Factory: Binary AUTH packet (Sequence must be 1 per protocol specification).
          */
         fun createAuth(session: Long, sequence: Long, tokenString: String): RswPacket {
+            require(tokenString.length == 32 && tokenString.all { it.code in 32..126 }) { "Token must be 32 ASCII characters" }
             val tokenBytes = ByteArray(RswConstants.TOKEN_LENGTH)
             val asciiBytes = tokenString.toByteArray(Charsets.US_ASCII)
             require(asciiBytes.size == RswConstants.TOKEN_LENGTH) {

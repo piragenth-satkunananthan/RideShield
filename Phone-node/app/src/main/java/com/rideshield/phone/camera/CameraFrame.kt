@@ -17,6 +17,7 @@ data class CameraFrame(
     val exposureUs: Long = 0L,              // Sensor exposure duration in microseconds
     val sensorGain: Int = 0,                // Sensor analog/digital gain
     val width: Int = 0,
+    val synthetic: Boolean = false,
     val height: Int = 0
 ) {
     /**
