@@ -1,11 +1,11 @@
-name: 'RideShield Semi-Final Judge Demo'
+name: 'RideShield Phase 1 Demo'
 version: 1
 author: 'RideShield Team'
 
 # Short presentation scenario.
 # The full scenario-full-demo-precise.yaml remains the engineering validation test.
 #
-# Live judge demo objectives:
+# Live demo objectives:
 #   1. Show helmet verification
 #   2. Show a real virtual-MPU crash and multi-factor verification
 #   3. Show rider cancellation
@@ -14,7 +14,7 @@ author: 'RideShield Team'
 #   6. Show LTE failure -> queued alert -> automatic retry
 #
 # Do not dump blackbox.csv during the live demo.
-# Use the full precise scenario if judges request deeper evidence.
+# Use the full precise scenario if reviewers request deeper evidence.
 
 steps:
 

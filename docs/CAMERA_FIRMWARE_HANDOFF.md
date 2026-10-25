@@ -31,7 +31,7 @@ Hardware confirmed by user:
 2. `firmware/camera-node/README.md`, `STREAM_PROTOCOL.md`, `VALIDATION.md`.
 3. `firmware/camera-node/src/main.cpp` and its include files.
 4. `firmware/main-controller/README.md`, `VALIDATION.md`, `platformio.ini`.
-5. `docs/SEMIFINAL_PROGRESS.md`.
+5. `docs/PROJECT_PROGRESS.md`.
 
 Older proposal/architecture documents can be stale: do not restore ESP32-S3 as
 the main board, MPU6050 or OP0062 based on those documents.

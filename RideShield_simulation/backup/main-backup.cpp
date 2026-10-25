@@ -5,7 +5,7 @@
 #include <math.h>
 
 // ============================================================
-// RideShield - Semi-Final Core Safety Proof-of-Concept
+// RideShield - Phase 1 Core Safety Proof-of-Concept
 // Wokwi / ESP32-S3
 //
 // What is REAL in the simulation:
@@ -523,7 +523,7 @@ void startCrashCandidate(bool injected) {
   peakGyro = imu.valid ? imu.gyroMag : 0.0f;
   eventStillness = false;
 
-  // Deterministic test injection for judges/demo.
+  // Deterministic test injection for the demo.
   // It enters the same verification/countdown path as a sensor event.
   if (injectedCrash) {
     peakAccel = max(peakAccel, 7.5f);

@@ -1,6 +1,6 @@
-# Semi-Final Test Plan
+# Phase 1 Test Plan
 
-The semi-final requires Track A physical validation. Use safe, controlled tests only.
+Phase 1 requires physical validation of the embedded system. Use safe, controlled tests only.
 
 ## 1. Helmet-worn logic
 Test all combinations:
@@ -68,4 +68,4 @@ At minimum distinguish dry vs wet. If data supports it, use dry/damp/wet/standin
 Report a confusion matrix or simple correct/incorrect counts.
 
 ## Results rule
-Do not invent performance values. Imperfect measured results are stronger semi-final evidence than unsupported claims.
+Do not invent performance values. Imperfect measured results are stronger Phase 1 evidence than unsupported claims.

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -o pipefail
 
-SCENARIO="${1:-scenario-judge-demo.yaml}"
+SCENARIO="${1:-scenario-demo.yaml}"
 TIMEOUT="${2:-65000}"
 
 # Run the automated Wokwi scenario but display only the useful RideShield
 # firmware output. The full raw log is simultaneously saved for evidence.
-RAW_LOG="judge-demo-raw.log"
+RAW_LOG="demo-raw.log"
 
 wokwi-cli . --scenario "$SCENARIO" --timeout "$TIMEOUT" 2>&1 \
   | tee "$RAW_LOG" \
@@ -27,7 +27,7 @@ wokwi-cli . --scenario "$SCENARIO" --timeout "$TIMEOUT" 2>&1 \
     # Avoid repeating a full STATUS line for every countdown second.
     /^\[STATUS\] state=COUNTDOWN/ { next }
 
-    # Firmware logs worth showing to judges.
+    # Firmware logs worth showing in the demo.
     /^\[BOOT\]/ ||
     /^\[HELMET\]/ ||
     /^\[CRASH\]/ ||

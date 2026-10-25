@@ -1,14 +1,14 @@
 param(
-    [string]$Scenario = "scenario-judge-demo.yaml",
+    [string]$Scenario = "scenario-demo.yaml",
     [int]$Timeout = 65000
 )
 
 $ErrorActionPreference = "Stop"
-$RawLog = "judge-demo-raw.log"
+$RawLog = "demo-raw.log"
 
 Write-Host ""
 Write-Host "==============================================="
-Write-Host "        RideShield Semi-Final Judge Demo"
+Write-Host "        RideShield Phase 1 Demo"
 Write-Host "==============================================="
 Write-Host "Scenario : $Scenario"
 Write-Host "Raw log  : $RawLog"
@@ -27,7 +27,7 @@ if (-not (Test-Path $Scenario)) {
     exit 1
 }
 
-# Patterns that should be hidden from the judge-facing view.
+# Patterns that should be hidden from the demo view.
 $hidePatterns = @(
     '^\[RideShield Full Automated',
     '^Wokwi CLI',
@@ -44,7 +44,7 @@ $hidePatterns = @(
     '^\[STATUS\] state=COUNTDOWN'
 )
 
-# Patterns that should be shown to judges.
+# Patterns that should be shown in the demo.
 $showPatterns = @(
     '^\[BOOT\]',
     '^\[HELMET\]',
@@ -93,11 +93,11 @@ if (Test-Path $RawLog) {
 }
 
 Write-Host "[INFO] Starting Wokwi automated simulation..."
-Write-Host "[INFO] Judge view is filtered; full output is saved to $RawLog."
+Write-Host "[INFO] Demo view is filtered; full output is saved to $RawLog."
 Write-Host ""
 
 # Run Wokwi.
-# Each raw line is written to judge-demo-raw.log first, then selected
+# Each raw line is written to demo-raw.log first, then selected
 # RideShield firmware lines are shown on screen.
 & wokwi-cli . --scenario $Scenario --timeout $Timeout 2>&1 |
     ForEach-Object {
@@ -138,7 +138,7 @@ $exitCode = $LASTEXITCODE
 Write-Host ""
 if ($exitCode -eq 0) {
     Write-Host "==============================================="
-    Write-Host " Judge demo finished successfully." -ForegroundColor Green
+    Write-Host " Demo finished successfully." -ForegroundColor Green
     Write-Host " Full raw log: $RawLog"
     Write-Host "==============================================="
 }

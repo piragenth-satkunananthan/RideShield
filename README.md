@@ -1,10 +1,10 @@
 # RideShield
 
-**IoTrix 2.0 – Track A: Embedded IoT System**
+**Embedded IoT safety project, South Eastern University of Sri Lanka**
 
 RideShield is a smart motorcycle-helmet safety platform that combines an independent embedded safety core with camera-based road and rear-traffic perception.
 
-> **Semi-final engineering principle:** perception features are auxiliary. Crash detection, logging and emergency communication must continue even if a camera or AI subsystem fails.
+> **Core engineering principle:** perception features are auxiliary. Crash detection, logging and emergency communication must continue even if a camera or AI subsystem fails.
 
 The hardware controller lives in [`firmware/main-controller`](firmware/main-controller/README.md). Its full profile is `nodemcu32s_core`, with a local access-point dashboard. `dev_version/rideshield-core` remains the simulation/test project.
 
@@ -12,7 +12,7 @@ Both camera nodes use [`firmware/camera-node`](firmware/camera-node/README.md):
 ESP32-CAM + OV2640, with separate `front` and `rear` build profiles. Their
 firmware captures timestamped JPEG streams; perception is performed separately.
 
-The Android app lives in [`Phone-node`](Phone-node/README.md). See the [phone connection guide](Phone-node/docs/CONTROLLER_INTEGRATION.md) for live sensor telemetry and the [progress tracker](docs/SEMIFINAL_PROGRESS.md) for remaining hardware checks.
+The Android app lives in [`Phone-node`](Phone-node/README.md). See the [phone connection guide](Phone-node/docs/CONTROLLER_INTEGRATION.md) for live sensor telemetry and the [progress tracker](docs/PROJECT_PROGRESS.md) for remaining hardware checks.
 
 ## Current architecture
 
@@ -78,9 +78,9 @@ RideShield reports a **Crash Event Severity Index** and classifies events as:
 
 This is **not a medical injury assessment**. The accelerometer's configured range is ±16 g, so the system does not claim true high-g impact magnitude after saturation.
 
-## Semi-final scope
+## Phase 1 scope
 
-The semi-final prioritizes proof over feature count.
+Phase 1 prioritizes proof over feature count.
 
 ### Core proof target
 - sensor acquisition on ESP32-S3
@@ -95,7 +95,7 @@ The semi-final prioritizes proof over feature count.
 - wet-road classification
 - model output shown with real or recorded road imagery
 
-### Later / secondary integration
+### Phase 2 / secondary integration
 - rear vehicle approach awareness
 - OP0062 prolonged-eye-closure warning
 - MQ-3 pre-ride alcohol-vapour screening
@@ -114,7 +114,7 @@ RideShield/
 ├── README.md
 ├── docs/
 │   ├── ARCHITECTURE.md
-│   ├── SEMIFINAL_PROGRESS.md
+│   ├── PROJECT_PROGRESS.md
 │   └── TEST_PLAN.md
 ├── firmware/
 │   └── README.md
@@ -142,12 +142,12 @@ Faculty of Technology – Department of Information and Communication Technology
 
 Project lead: Piragenth
 
-## Semi-final
+## Phase 1 deliverables
 
-For the semi-final, judges should be able to see:
+At the end of Phase 1, reviewers should be able to see:
 1. the complete system architecture,
 2. real hardware/firmware progress,
 3. a changed-input physical test,
 4. front-vision proof-of-concept,
 5. basic measured validation,
-6. known limitations and the plan for the final.
+6. known limitations and the plan for Phase 2.

@@ -1,4 +1,4 @@
-# Semi-Final Technical Progress
+# Phase 1 Technical Progress
 
 ## Problem
 Motorcycle riders can face delayed emergency response after a crash, limited warning of road hazards such as potholes and wet surfaces, and reduced awareness of vehicles approaching from behind.
@@ -38,7 +38,7 @@ Use this table as the repository source of truth and update it only with real ev
 Software builds and unit tests do not establish road readiness. The phone currently
 requires foreground operation; reliable background riding operation remains work.
 
-## Semi-final proof target
+## Phase 1 proof target
 The strongest demo is one complete chain:
 
 ```text
@@ -53,7 +53,7 @@ changed physical input
 
 The vision proof should separately show pothole and wet-road model outputs.
 
-## Three required progress screenshots
+## Three progress screenshots
 1. **Embedded progress:** NodeMCU-32S + IMU/ToF/KY-033 with real serial output and phone telemetry.
 2. **Pothole progress:** real model inference with pothole bounding box/confidence.
 3. **Wet-road or system-integration progress:** classifier output, GPS/LTE result, or another genuine implementation result.

@@ -1,6 +1,6 @@
 # Scope and remaining integration work
 
-This release implements the core first, as requested. All required final-project
+This release implements the core first, as requested. All required full-project
 features remain in scope for the broader project, but the unavailable architecture
 image and earlier documents cannot be treated as implemented specifications.
 The code uses the visible decision: two camera streams → phone AI → main ESP32-S3
@@ -21,7 +21,7 @@ alerts, with onboard crash/SOS logic independent of the phone.
 | LTE/SMS | Generic nonblocking AT engine and retries | Exact module, power/PWRKEY, UART levels, operator setup, prompt recovery, live tests |
 | Logging | CRC records, RAM capture, async SD/NVS | Power-cut, card-removal and wear testing; optional export UI |
 | Wear/strap | Conservative Unknown; portable presence input | Sensor selection, debounce/calibration and hardware adapter |
-| Other helmet features | Not inferred/implemented | Eye closure, MQ-3B, orientation, photo evidence, HUD, cloud, battery management if required by final spec |
+| Other helmet features | Not inferred/implemented | Eye closure, MQ-3B, orientation, photo evidence, HUD, cloud, battery management if required by the full project spec |
 
 Real SMS is labelled TEST. No emergency services are contacted. There is no
 medical injury/severity classifier, engine interlock, OTA updater, cloud service,

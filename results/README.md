@@ -1,6 +1,6 @@
 # Test Results
 
-Store measured semi-final evidence here.
+Store measured Phase 1 evidence here.
 
 Suggested files:
 - crash-tests.csv
